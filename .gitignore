@@ -43,3 +43,18 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+# Flutter/Dart specific files
+
+android/.gradle/
+ios/Pods/
+ios/.symlinks/
+macos/Pods/
+windows/.dart_tool/
+linux/.dart_tool/
+*.iml
+
+# IDE files
+.vscode/
+.idea/
