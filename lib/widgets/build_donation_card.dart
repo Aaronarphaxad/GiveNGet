@@ -1,56 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/models/donation_item.dart';
+import 'package:givenget/screens/donation_detail_screen.dart';
 
-Widget buildDonationCard(DonationItem item) {
-  return Card(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12), // Rounded card
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(12)), // Rounded top image
-          child: Container(
-            height: 120, // Total height of the card
-            width: double.infinity, // Make the image fill the width
-            color: Colors.grey[300], // Grey background for placeholder
-            child: const Center(
-              child: Icon(
-                Icons.image,
-                size: 50,
-                color: Colors.grey,
-              ),
-            ), // Placeholder icon
-          ),
+Widget buildDonationCard(BuildContext context, DonationItem item) {
+  return GestureDetector(
+    onTap: () {
+      // Navigate to the detail page with the selected item
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DonationDetailScreen(item: item),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                item.title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+      );
+    },
+    child: Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12), // Rounded corners
+      ),
+      color: Colors.white,
+      elevation: 3, // Slight shadow for depth
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+            child: Container(
+              height: 140, // Fixed height for image container
+              width: double.infinity,
+              color: Colors.grey[300], // Placeholder background
+              child: item.imageUrl.isNotEmpty
+                  ? Image.network(
+                      item.imageUrl,
+                      fit: BoxFit.cover, // Ensures the image covers the entire space
+                      width: double.infinity,
+                      height: 140,
+                    )
+                  : const Center(
+                      child: Icon(Icons.image, size: 50, color: Colors.grey),
+                    ), // Placeholder icon if no image URL
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                item.donor,
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                item.datePosted,
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-            ],
+                const SizedBox(height: 4),
+                Text(
+                  'Donor: ${item.donor}',
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  item.datePosted,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }
