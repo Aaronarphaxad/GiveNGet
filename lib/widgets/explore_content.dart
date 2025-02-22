@@ -146,7 +146,7 @@ class _ExploreContentState extends State<ExploreContent>
         padding: const EdgeInsets.all(8.0),
         itemCount: mockDonationItems.length, // Show all items
         itemBuilder: (context, index) {
-          return buildDonationCard(mockDonationItems[index]);
+          return buildDonationCard(context, mockDonationItems[index]);
         },
       );
     }
@@ -161,7 +161,7 @@ class _ExploreContentState extends State<ExploreContent>
       padding: const EdgeInsets.all(8.0),
       itemCount: filteredItems.length,
       itemBuilder: (context, index) {
-        return buildDonationCard(filteredItems[index]);
+        return buildDonationCard(context, filteredItems[index]);
       },
     );
   }
