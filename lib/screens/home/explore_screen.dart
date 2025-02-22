@@ -34,7 +34,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.black, // Keep the text color same
         unselectedItemColor: Colors.grey.shade600, // Inactive text color
-        selectedIconTheme: const IconThemeData(color: Colors.blueAccent), // More vibrant active icon color
+        selectedIconTheme: const IconThemeData(color: Color.fromARGB(255, 167, 228, 250),), // More vibrant active icon color
         unselectedIconTheme: const IconThemeData(color: Colors.grey), // Inactive icon color
         backgroundColor: Colors.white, // Background color for the bottom bar
         elevation: 5, // Shadow for the bottom bar
