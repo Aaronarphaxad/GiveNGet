@@ -1,0 +1,2 @@
+/Users/isabelagbu/Music/Winter2025/special-topics/GiveNGet/android/app/.cxx/Debug/2l2d3h5p/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/isabelagbu/Music/Winter2025/special-topics/GiveNGet/android/app/.cxx/Debug/2l2d3h5p/arm64-v8a/CMakeFiles/rebuild_cache.dir
