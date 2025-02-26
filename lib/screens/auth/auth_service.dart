@@ -1,24 +1,61 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  static Future<void> saveCredentials(String email, String password, String userStatus) async {
+  // Key for storing users in SharedPreferences
+  static const String _usersKey = 'users';
+
+  static Future<void> saveUserDetails({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phone,
+    required String password,
+    required String userStatus,
+  })
+
+  async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('email', email);
-    await prefs.setString('password', password);
-    await prefs.setString('userStatus', userStatus);  // Save the user status
+    final users = prefs.getStringList(_usersKey) ?? [];
+
+    final user = {
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'phone': phone,
+      'password': password,
+      'userStatus': userStatus,
+    };
+
+    final userJson = user.entries.map((e) => '${e.key}:${e.value}').join(',');
+
+    users.add(userJson);
+
+    await prefs.setStringList(_usersKey, users);
   }
 
-  static Future<Map<String, String?>> getCredentials() async {
+  static Future<Map<String, String>?> getUserByEmail(String email) async {
     final prefs = await SharedPreferences.getInstance();
-    return {
-      'email': prefs.getString('email'),
-      'password': prefs.getString('password'),
-      'userStatus': prefs.getString('userStatus'),  // Fetch user status
-    };
+    final users = prefs.getStringList(_usersKey) ?? [];
+
+    for (final userJson in users) {
+      final user = userJson.split(',').map((e) {
+        final parts = e.split(':');
+        return MapEntry(parts[0], parts[1]);
+      }).toList().fold<Map<String, String>>({}, (map, entry) {
+        map[entry.key] = entry.value;
+        return map;
+      });
+
+      if (user['email'] == email) {
+        return user;
+      }
+    }
+
+    return null;
   }
 
   static Future<bool> authenticate(String email, String password) async {
-    final credentials = await getCredentials();
-    return credentials['email'] == email && credentials['password'] == password;
+    final user = await getUserByEmail(email);
+    return user != null && user['password'] == password;
   }
 }
