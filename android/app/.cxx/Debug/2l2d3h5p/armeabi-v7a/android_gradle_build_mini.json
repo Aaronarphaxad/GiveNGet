@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/isabelagbu/tools/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/isabelagbu/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/isabelagbu/Music/Winter2025/special-topics/GiveNGet/android/app/.cxx/Debug/2l2d3h5p/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/isabelagbu/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/isabelagbu/Music/Winter2025/special-topics/GiveNGet/android/app/.cxx/Debug/2l2d3h5p/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
