@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givenget/screens/home/profile_branch/notification_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../auth/login_screen.dart';
 import '../auth/auth_service.dart';
@@ -47,7 +48,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Profile'),
+        title: const Center(child: Text('Profile'),),
+        actions: [
+          IconButton(onPressed: (){//move to notification page
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context)=>NotificationScreen()));
+          }, icon: const Icon(Icons.notifications))
+        ],
+          
       ),
       body: Center(
         child: Padding(
@@ -55,22 +63,134 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                radius: 50,
-                child: Icon(Icons.person, size: 50),
+              Container(//------------------------------main
+                width: double.infinity,
+                height: 300,
+                child: Column(
+                  children: [
+                    Text(""),
+                    Text(""),
+                    const CircleAvatar(
+                      radius: 75,
+                      child: Icon(Icons.person, size: 50),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      '$_firstName $_lastName',
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.star, color: Colors.yellow, size: 20,),
+                          Icon(Icons.star, color: Colors.yellow, size: 20,),
+                          Icon(Icons.star, color: Colors.yellow, size: 20,),
+                          Icon(Icons.star, color: Colors.yellow, size: 20,),
+                          Icon(Icons.star, color: Colors.yellow, size: 20,),
+                          Text(" | 24 Donations")
+                        ],
+                      ),
+                    )
+                  ]
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.cyan[100],
+                ),
               ),
-              const SizedBox(height: 20),
-              Text(
-                '$_firstName $_lastName',
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+
+
+              const SizedBox(height: 10,),
+              Container(//---------------------Account Details
+                width: 300,
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 10),
+                    Icon(Icons.account_circle),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      child: Text("Account Details"),
+                    ),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.cyan[100],
+                  borderRadius: BorderRadius.circular(4),
+                ),
               ),
-              const SizedBox(height: 10),
-              Text(_email),
-              const SizedBox(height: 10),
-              Text(_phone),
-              const SizedBox(height: 10),
-              Text(_userStatus),
-              const SizedBox(height: 40),
+              const SizedBox(height: 10,),
+              Container(//---------------------My Donations
+                width: 300,
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 10),
+                    Icon(Icons.volunteer_activism),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      child: Text("My Donations"),
+                    ),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.cyan[100],
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+              const SizedBox(height: 10,),
+              Container(//---------------------Change Language
+                width: 300,
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 10),
+                    Icon(Icons.language),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      child: Text("Change Language"),
+                    ),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.cyan[100],
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+              const SizedBox(height: 10,),
+              Container(//---------------------Help & Support
+                width: 300,
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 10),
+                    Icon(Icons.support_agent),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      child: Text("Help & Support"),
+                    ),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.cyan[100],
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+
+              // Text(_email, ),
+              // const SizedBox(height: 10),
+              // Text(_phone),
+              // const SizedBox(height: 10),
+              // Text(_userStatus),
+              const SizedBox(height: 60),
+
+
+
               ElevatedButton(
                 onPressed: () async {
                   final prefs = await SharedPreferences.getInstance();
@@ -82,7 +202,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   );
                 },
-                child: const Text('Logout'),
+                style: ElevatedButton.styleFrom(
+                  // minimumSize: MaterialStateProperty.all(Size(300, 40)),
+                  minimumSize: Size(300, 40),
+                  side: BorderSide(
+                    color: Colors.red, // Border color
+                    width: 1.0,
+                  ),
+
+                ),
+                child: const Text('Logout',style: TextStyle(color: Colors.red)),
               ),
             ],
           ),

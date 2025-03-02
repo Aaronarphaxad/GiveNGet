@@ -1,0 +1,2 @@
+C:/Users/300380547/Downloads/GNG/GiveNGet/android/app/.cxx/Debug/3x5i603y/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/300380547/Downloads/GNG/GiveNGet/android/app/.cxx/Debug/3x5i603y/armeabi-v7a/CMakeFiles/rebuild_cache.dir
