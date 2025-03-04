@@ -37,20 +37,20 @@ class FavoritesScreen extends StatelessWidget {
                 SizedBox(
                 width: 360,
                 child: TextField(
-                  cursorColor: Color.fromARGB(255, 73, 181, 220), 
+                  cursorColor: Color(0xFF3A6351), 
                   decoration: InputDecoration(
                     focusedBorder:  OutlineInputBorder(
-                      borderSide: BorderSide(color: const Color.fromARGB(255, 73, 181, 220), width: 2),
+                      borderSide: BorderSide(color: Color(0xFF3A6351), width: 2),
                     ),
                     border: OutlineInputBorder(),
                     label: Text('Search items...'),
                     floatingLabelStyle: TextStyle(
-                      color: Color.fromARGB(255, 73, 181, 220), 
+                      color: Color(0xFF3A6351), 
                     ),
                   ),
                 ),
               ),
-              IconButton(onPressed: (){}, icon: Icon(Icons.search, color: Colors.grey,)),
+              IconButton(onPressed: (){}, icon: Icon(Icons.search, color: Color(0xFF3A6351),),),
               ],
             ),
            Expanded(
@@ -59,9 +59,9 @@ class FavoritesScreen extends StatelessWidget {
                child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, 
-                    crossAxisSpacing: 10, 
-                    mainAxisSpacing: 10,  
-                    childAspectRatio: 0.8,  
+                    crossAxisSpacing: 6, 
+                    mainAxisSpacing: 6,  
+                    childAspectRatio: 0.78,  
                   ),
                   itemCount: _getFavourites().length,  
                   itemBuilder: (context, index) {
@@ -87,70 +87,75 @@ class FavouriteDonationGridListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},  // we navigate to detail screen here
-      child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.black, width: 0.5),
-            color: Colors.white
-          ),       
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start, 
-                children: [
-                  Container(
-                    height: 156,  
-                    width: double.infinity, 
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(14),
-                      child: Image.asset(
-                        favouriteItems[index].imageUrl,
-                        fit: BoxFit.fill, 
+      onTap: () {
+
+
+      },  // we navigate to detail screen here
+      child: Card(
+        elevation: 3,
+        child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white
+            ),       
+            child: Stack(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, 
+                  children: [
+                    Container(
+                      height: 156,  
+                      width: double.infinity, 
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Image.asset(
+                          favouriteItems[index].imageUrl,
+                          fit: BoxFit.fill, 
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,  
-                      children: [
-                        Text(
-                          favouriteItems[index].title,
-                          textAlign: TextAlign.left,  
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          'Donated by ' + favouriteItems[index].donor,
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        Text(
-                          'Posted ' + favouriteItems[index].datePosted,
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,  
+                        children: [
+                          Text(
+                            favouriteItems[index].title,
+                            textAlign: TextAlign.left,  
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            'Donated by ' + favouriteItems[index].donor,
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          Text(
+                            'Posted ' + favouriteItems[index].datePosted,
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(  
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: const Color.fromARGB(104, 0, 0, 0),
+                      ),           
+                      width: 30,
+                      height: 30,
+                      child: IconButton(onPressed: () {}, icon: Icon(Icons.clear, color: Colors.white, size: 14,),),
                     ),
                   ),
-                ],
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(  
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: const Color.fromARGB(104, 0, 0, 0),
-                    ),           
-                    width: 30,
-                    height: 30,
-                    child: IconButton(onPressed: () {}, icon: Icon(Icons.clear, color: Colors.white, size: 14,),),
-                  ),
-                ),
-              )
-            ],
-          )
-        ),
+                )
+              ],
+            )
+          ),
+      ),
     );;
   }
 }

@@ -165,7 +165,7 @@ class ProfileItem extends StatelessWidget {
       child: Container(
         height: 44,
         decoration: BoxDecoration(
-          color: Color(0xFF3A6351),
+          color: Color.fromARGB(231, 58, 99, 81),
            borderRadius: BorderRadius.circular(3), 
         ),
         child: Row(
@@ -197,7 +197,9 @@ class LogoutButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 20,right: 20),
       child: GestureDetector(
-        onTap: () { },
+        onTap: () {
+          Navigator.pushReplacementNamed(context, '/login');
+         },
         child: SizedBox(
           width: double.infinity, 
           height: 40, 

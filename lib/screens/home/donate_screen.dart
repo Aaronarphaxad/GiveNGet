@@ -18,7 +18,7 @@ class _DonateScreenState extends State<DonateScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text("Post a Donation", style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text("Post a Donation",),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
