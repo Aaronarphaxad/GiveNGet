@@ -120,11 +120,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               backgroundColor: const Color(0xFF3A6351),
                               foregroundColor: Colors.white),
                           onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignupScreen()),
-                            );
+                            Navigator.pushReplacementNamed(context, '/signup');
                           },
                           child: const Text(
                             "Get Started",

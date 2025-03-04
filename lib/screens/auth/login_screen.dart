@@ -69,85 +69,128 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _continueAsGuest() async {
-    await AuthService.saveUserDetails(
-      firstName: 'Guest',
-      lastName: 'User',
-      email: 'guest@test.com',
-      phone: 'N/A',
-      password: 'N/A',
-      userStatus: 'guest',
-    );
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const ExploreScreen()),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        title: const Text('Login'),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0, // Removes shadow
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, 
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/givenget_icon.png',
-                    height: 100,
-                    width: 100,
+              // LOGO
+              Image.asset(
+                'assets/images/givenget-logo.png',
+                width: 120,
+                height: 50,
+              ),
+              const SizedBox(height: 20), 
+          
+              // EMAIL FIELD
+              CustomTextFormField(
+                formFieldController: _emailController,
+                formFieldIcon: const Icon(Icons.email),
+                labelText: 'Your Email',
+                validation: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+          
+              // PASSWORD FIELD
+              CustomTextFormField(
+                formFieldController: _passwordController,
+                formFieldIcon: const Icon(Icons.lock),
+                labelText: 'Password',
+                validation: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+          
+              // FORGOT PASSWORD
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/forgotpassword');
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: const Size(0, 0),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
-                  const SizedBox(height: 10,),
-                  const Text(
-                    'Welcome to GiveNGet',
-                    style: TextStyle(fontSize: 32),
-                  )
-                ],
+                  child: const Text(
+                    'Forgot Your Password?',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color.fromARGB(255, 94, 155, 234),
+                      decoration: TextDecoration.underline,
+                      decorationThickness: 2,
+                      decorationColor: Color.fromARGB(255, 94, 155, 234),
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Password'),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _login,
-                child: const Text('Login'),
+              const SizedBox(height: 20),
+          
+              // LOGIN BUTTON
+              CustomGreenButton(
+                text: 'Login', 
+                onPressed: (){ // removing login logic for now
+                  Navigator.pushReplacementNamed(context, '/explore');
+                }
               ),
               const SizedBox(height: 5),
-              ElevatedButton(
-                onPressed: _continueAsGuest,
-                child: const Text('Continue as guest'),
+          
+              // SIGNUP OPTION
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Don\'t have an account? ',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color.fromARGB(255, 115, 114, 114),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                     Navigator.pushReplacementNamed(context, '/signup');
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: const Size(0, 0),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: const Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 94, 155, 234),
+                        decoration: TextDecoration.underline,
+                        decorationThickness: 2,
+                        decorationColor: Color.fromARGB(255, 94, 155, 234),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SignupScreen()),
-                  );
-                },
-                child: const Text('Don’t have an account? Sign up'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()),
-                  );
-                },
-                child: const Text('Forgot Password?'),
-              ),
+              const SizedBox(height: 20), // Final spacing
             ],
           ),
         ),

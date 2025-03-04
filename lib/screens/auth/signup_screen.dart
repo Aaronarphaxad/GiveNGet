@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givenget/screens/auth/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
 import '../home/explore_screen.dart';
@@ -61,111 +62,242 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
         title: const Text('Sign Up'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(left: 16.0,right: 16.0,bottom: 16.0,top: 10),
           child: Form(
             key: _formKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: _firstNameController,
-                  decoration: const InputDecoration(labelText: 'First Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your first name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _lastNameController,
-                  decoration: const InputDecoration(labelText: 'Last Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your last name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    if (!value.contains('@')) {
-                      return 'Please enter a valid email';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _phoneController,
-                  decoration: const InputDecoration(labelText: 'Phone Number'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
-                    }
-                    if (value.length < 10) {
-                      return 'Please enter a valid phone number';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a password';
-                    }
-                    if (value.length < 8) {
-                      return 'Password must be at least 8 characters';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _confirmPasswordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Confirm Password'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
-                    }
-                    if (value != _passwordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _signup,
-                  child: const Text('Sign Up'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Already have an account? Login'),
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/images/givenget-logo.png',
+                    width: 120,
+                    height: 50,         
+                  ),
+                  const SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: (){},
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      padding: const EdgeInsets.all(12), 
+                      decoration: BoxDecoration(                     
+                        border: Border.all(color: Colors.grey, width: 1.5), 
+                        borderRadius: BorderRadius.circular(30), 
+                      ),
+                      child: Column(   
+                        mainAxisAlignment: MainAxisAlignment.center,                  
+                        children: [
+                          SizedBox(height: 16),
+                          const Text(
+                            'Profile Image',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 10), 
+                          const Icon(
+                            Icons.upload_rounded,
+                            size: 30, 
+                            color: Color(0xFF3A6351), 
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  CustomTextFormField(
+                    formFieldController: _firstNameController, 
+                    formFieldIcon: Icon(Icons.person), 
+                    labelText: 'First Name', 
+                    validation: (value) {
+                     if (value == null || value.isEmpty) {
+                        return 'Please enter your first name';
+                      }
+                      return null;
+                  }),
+                  const SizedBox(height: 10),
+                  CustomTextFormField(
+                    formFieldController: _lastNameController, 
+                    formFieldIcon: Icon(Icons.person), 
+                    labelText: 'Last Name', 
+                    validation: (value) {
+                     if (value == null || value.isEmpty) {
+                        return 'Please enter your last name';
+                      }
+                      return null;
+                  }),         
+                  const SizedBox(height: 10),
+                   CustomTextFormField(
+                    formFieldController: _emailController, 
+                    formFieldIcon: Icon(Icons.email), 
+                    labelText: 'Email Address', 
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (!value.contains('@')) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                   }),
+                  const SizedBox(height: 10),
+                  CustomTextFormField(
+                    formFieldController: _phoneController, 
+                    formFieldIcon: Icon(Icons.phone), 
+                    labelText: 'Phone Number', 
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your phone number';
+                      }
+                      if (value.length < 10) {
+                        return 'Please enter a valid phone number';
+                      }
+                      return null;
+                   }),
+                  const SizedBox(height: 10),
+                  CustomTextFormField(
+                    formFieldController: _passwordController, 
+                    formFieldIcon: Icon(Icons.lock), 
+                    labelText: 'Password', 
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a password';
+                      }
+                      if (value.length < 8) {
+                        return 'Password must be at least 8 characters';
+                      }
+                      return null;
+                   }),               
+                  const SizedBox(height: 10),
+                  CustomTextFormField(
+                    formFieldController: _confirmPasswordController, 
+                    formFieldIcon: Icon(Icons.lock), 
+                    labelText: 'Confirm Password', 
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please confirm your password';
+                      }
+                      if (value != _passwordController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                   }),  
+                  const SizedBox(height: 20),
+                 CustomGreenButton(
+                  text: 'Sign Up', 
+                  onPressed: (){ // removing sign up logic for now
+                       Navigator.pushReplacementNamed(context, '/login');
+                   }),
+                SizedBox(height: 5,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [ 
+                    Text('Already have an account?',style: TextStyle(fontSize: 16,color: const Color.fromARGB(255, 115, 114, 114)),),
+                    TextButton(                      
+                      onPressed: (){
+                        Navigator.pushReplacementNamed(context, '/login');
+                      }, 
+                            style: TextButton.styleFrom(
+                        padding: EdgeInsets.only(left: 4), 
+                        minimumSize: Size(0, 0), 
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap, 
+                      ),
+                      child: Text('Login',                                          
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color.fromARGB(255, 94, 155, 234), 
+                      decoration: TextDecoration.underline, 
+                      decorationThickness: 2,
+                      decorationColor: Color.fromARGB(255, 94, 155, 234), 
+                      ),
+                     ),
+                    ),
+                   ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+
+class CustomGreenButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+
+  const CustomGreenButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity, // Ensures full width
+      height: 50, // Ensures consistent button height
+      child: ElevatedButton(
+        onPressed: onPressed, // Uses passed function
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF3A6351), // Green button
+          foregroundColor: Colors.white, // White text
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20), // Rounded corners
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+}
+
+
+class CustomTextFormField extends StatelessWidget {
+  const CustomTextFormField({
+    super.key,
+    required this.formFieldController,
+    required this.formFieldIcon,
+    required this.labelText,
+    required this.validation,
+  });
+
+  final TextEditingController formFieldController;
+  final Icon formFieldIcon;
+  final String labelText;
+  final String? Function(String?) validation; // Corrected validation type
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      cursorColor: const Color(0xFF3A6351),
+      controller: formFieldController,
+      decoration: InputDecoration(
+        prefixIcon: formFieldIcon,
+        prefixIconColor: MaterialStateColor.resolveWith((states) =>
+          states.contains(MaterialState.focused) ? const Color(0xFF3A6351) : Colors.grey), // Change on focus
+        labelText: labelText,
+        floatingLabelStyle: const TextStyle(color: Color(0xFF3A6351)), // Label color on focus
+        border: const OutlineInputBorder(),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF3A6351), width: 2), // Change focus color
+        ),
+      ),
+      validator: validation, // Uses passed validation function
     );
   }
 }

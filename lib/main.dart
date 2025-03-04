@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:givenget/screens/auth/login_screen.dart';
+import 'package:givenget/screens/auth/password_screen.dart';
+import 'package:givenget/screens/auth/signup_screen.dart';
+import 'package:givenget/screens/home/explore_screen.dart';
 import 'screens/intro_screen.dart';
 
 void main() {
@@ -16,7 +20,13 @@ class GiveNGetApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const IntroScreen(), // Start with the Intro Screen
+      routes: {
+        '/' : (context){ return IntroScreen();},
+        '/signup' : (context) {return SignupScreen();},
+        '/login' : (context) {return LoginScreen();},
+        '/forgotpassword' : (context) {return ForgotPasswordScreen();},
+        '/explore' : (context) {return ExploreScreen();}
+      },
     );
   }
 }
