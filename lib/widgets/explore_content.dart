@@ -40,8 +40,9 @@ class _ExploreContentState extends State<ExploreContent>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Padding(
         padding: const EdgeInsets.only(top: 16.0),
         child: Column(
           children: [
@@ -79,9 +80,9 @@ class _ExploreContentState extends State<ExploreContent>
                 );
               }).toList(),
             ),
-
+      
             const SizedBox(height: 10),
-
+      
             // Search Input Field (New Position)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -109,9 +110,9 @@ class _ExploreContentState extends State<ExploreContent>
                 ),
               ),
             ),
-
+      
             const SizedBox(height: 10),
-
+      
             // TabBarView (Explore Items)
             Expanded(
               child: TabBarView(

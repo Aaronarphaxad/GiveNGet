@@ -23,7 +23,9 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text("Details"),
         actions: [
           IconButton(
@@ -44,7 +46,7 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: widget.item.imageUrl.isNotEmpty
-                  ? Image.network(
+                  ?  Image.asset(
                       widget.item.imageUrl,
                       width: double.infinity,
                       height: 200,

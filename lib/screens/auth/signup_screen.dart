@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/screens/auth/login_screen.dart';
+import 'package:givenget/widgets/custom_green_button.dart';
+import 'package:givenget/widgets/custom_text_form_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
 import '../home/explore_screen.dart';
@@ -194,6 +196,15 @@ class _SignupScreenState extends State<SignupScreen> {
                  CustomGreenButton(
                   text: 'Sign Up', 
                   onPressed: (){ // removing sign up logic for now
+                     
+                      // Simulate sign up 
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Sign Up Successful!'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+
                        Navigator.pushReplacementNamed(context, '/login');
                    }),
                 SizedBox(height: 5,),
@@ -203,6 +214,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     Text('Already have an account?',style: TextStyle(fontSize: 16,color: const Color.fromARGB(255, 115, 114, 114)),),
                     TextButton(                      
                       onPressed: (){
+
                         Navigator.pushReplacementNamed(context, '/login');
                       }, 
                             style: TextButton.styleFrom(
@@ -232,72 +244,3 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 }
 
-
-class CustomGreenButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-
-  const CustomGreenButton({
-    super.key,
-    required this.text,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity, // Ensures full width
-      height: 50, // Ensures consistent button height
-      child: ElevatedButton(
-        onPressed: onPressed, // Uses passed function
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF3A6351), // Green button
-          foregroundColor: Colors.white, // White text
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20), // Rounded corners
-          ),
-        ),
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-}
-
-
-class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({
-    super.key,
-    required this.formFieldController,
-    required this.formFieldIcon,
-    required this.labelText,
-    required this.validation,
-  });
-
-  final TextEditingController formFieldController;
-  final Icon formFieldIcon;
-  final String labelText;
-  final String? Function(String?) validation; // Corrected validation type
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      cursorColor: const Color(0xFF3A6351),
-      controller: formFieldController,
-      decoration: InputDecoration(
-        prefixIcon: formFieldIcon,
-        prefixIconColor: MaterialStateColor.resolveWith((states) =>
-          states.contains(MaterialState.focused) ? const Color(0xFF3A6351) : Colors.grey), // Change on focus
-        labelText: labelText,
-        floatingLabelStyle: const TextStyle(color: Color(0xFF3A6351)), // Label color on focus
-        border: const OutlineInputBorder(),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFF3A6351), width: 2), // Change focus color
-        ),
-      ),
-      validator: validation, // Uses passed validation function
-    );
-  }
-}

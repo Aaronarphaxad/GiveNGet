@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:givenget/widgets/custom_green_button.dart';
+import 'package:givenget/widgets/custom_text_form_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
 import 'signup_screen.dart';
@@ -152,6 +154,15 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomGreenButton(
                 text: 'Login', 
                 onPressed: (){ // removing login logic for now
+
+                // Simulate login
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Login Successful!'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+
                   Navigator.pushReplacementNamed(context, '/explore');
                 }
               ),

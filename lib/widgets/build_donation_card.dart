@@ -29,12 +29,7 @@ Widget buildDonationCard(BuildContext context, DonationItem item) {
               width: double.infinity,
               color: Colors.grey[300], // Placeholder background
               child: item.imageUrl.isNotEmpty
-                  ? Image.network(
-                      item.imageUrl,
-                      fit: BoxFit.cover, // Ensures the image covers the entire space
-                      width: double.infinity,
-                      height: 140,
-                    )
+                  ? Image.asset(item.imageUrl, width: double.infinity, fit: BoxFit.cover,height: 140,)                
                   : const Center(
                       child: Icon(Icons.image, size: 50, color: Colors.grey),
                     ), // Placeholder icon if no image URL
