@@ -35,7 +35,7 @@ class _ExploreContentState extends State<ExploreContent> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
+        padding: const EdgeInsets.only(top: 24.0),
         child: Column(
           children: [
             // Scrollable Category Filters using ChoiceChip

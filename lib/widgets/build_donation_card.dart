@@ -13,55 +13,70 @@ Widget buildDonationCard(BuildContext context, DonationItem item) {
         ),
       );
     },
-    child: Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12), // Rounded corners
-      ),
-      color: Colors.white,
-      elevation: 3, // Slight shadow for depth
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-            child: Container(
-              height: 140, // Fixed height for image container
-              width: double.infinity,
-              color: Colors.grey[300], // Placeholder background
-              child: item.imageUrl.isNotEmpty
-                  ? Image.asset(item.imageUrl, width: double.infinity, fit: BoxFit.cover,height: 140,)                
-                  : const Center(
-                      child: Icon(Icons.image, size: 50, color: Colors.grey),
-                    ), // Placeholder icon if no image URL
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    child:  Card(
+        elevation: 3,
+        child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white
+            ),       
+            child: Stack(
               children: [
-                Text(
-                  item.title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, 
+                  children: [
+                    Container(
+                      height: 156,  
+                      width: double.infinity, 
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Image.asset(
+                          item.imageUrl,
+                          fit: BoxFit.fill, 
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,  
+                        children: [
+                          Text(
+                            item.title,
+                            textAlign: TextAlign.left,  
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            'Donated by ' + item.donor,
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          Text(
+                            'Posted ' + item.datePosted,
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(  
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: const Color.fromARGB(104, 0, 0, 0),
+                      ),           
+                      width: 30,
+                      height: 30,
+                      child: IconButton(onPressed: () {}, icon: Icon(Icons.clear, color: Colors.white, size: 14,),),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Donor: ${item.donor}',
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  item.datePosted,
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
-                ),
+                )
               ],
-            ),
+            )
           ),
-        ],
       ),
-    ),
   );
 }
