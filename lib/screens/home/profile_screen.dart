@@ -55,28 +55,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: const Text('Profile'),
         centerTitle: true,
         actions: [
-          Stack(
-            alignment: Alignment.bottomLeft,
-            children: [
+          GestureDetector(
+            onTap: (){
+              Navigator.pushNamed(context, '/notifications');
+            },
+            child: Stack(
+              alignment: Alignment.bottomLeft,
+              children: [
               Icon(Icons.notifications_active, color: Color.fromARGB(255, 162, 1, 1),size: 30,),
-             Container(
-              width: 16,
-              height: 16, 
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 162, 1, 1),
-                shape: BoxShape.circle, 
-              ),
-              alignment: Alignment.center, 
-              child: const Text(
-                '5',
-                style: TextStyle(
-                  color: Colors.white, 
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
+               Container(
+                width: 16,
+                height: 16, 
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 162, 1, 1),
+                  shape: BoxShape.circle, 
+                ),
+                alignment: Alignment.center, 
+                child: const Text(
+                  '5',
+                  style: TextStyle(
+                    color: Colors.white, 
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
+              ]           
             ),
-            ]           
           ),
           SizedBox(width: 16,),
         ],

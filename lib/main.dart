@@ -5,6 +5,7 @@ import 'package:givenget/screens/auth/password_screen.dart';
 import 'package:givenget/screens/auth/signup_screen.dart';
 import 'package:givenget/screens/home/account_details_screen.dart';
 import 'package:givenget/screens/home/explore_screen.dart';
+import 'package:givenget/screens/notification_screen.dart';
 import 'screens/intro_screen.dart';
 
 void main() {
@@ -29,7 +30,8 @@ class GiveNGetApp extends StatelessWidget {
         '/login' : (context) {return LoginScreen();},
         '/forgotpassword' : (context) {return ForgotPasswordScreen();},
         '/explore' : (context) {return ExploreScreen();},
-         '/account-details' : (context) {return AccountDetailsScreen();}
+        '/account-details' : (context) {return AccountDetailsScreen();},
+        '/notifications' : (context) {return NotificationsScreen();}
       },
     );
   }
