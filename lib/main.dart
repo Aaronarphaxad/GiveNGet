@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:givenget/screens/auth/login_screen.dart';
 import 'package:givenget/screens/auth/password_screen.dart';
 import 'package:givenget/screens/auth/signup_screen.dart';
+import 'package:givenget/screens/home/account_details_screen.dart';
 import 'package:givenget/screens/home/explore_screen.dart';
 import 'screens/intro_screen.dart';
 
 void main() {
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   runApp(const GiveNGetApp());
 }
 
@@ -25,7 +28,8 @@ class GiveNGetApp extends StatelessWidget {
         '/signup' : (context) {return SignupScreen();},
         '/login' : (context) {return LoginScreen();},
         '/forgotpassword' : (context) {return ForgotPasswordScreen();},
-        '/explore' : (context) {return ExploreScreen();}
+        '/explore' : (context) {return ExploreScreen();},
+         '/account-details' : (context) {return AccountDetailsScreen();}
       },
     );
   }
