@@ -30,12 +30,14 @@ class _InterestFormModalState extends State<InterestFormModal> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title
-            Text(
-              "Send a message to the donor",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF3A6351), // Green color for theme consistency
+            Center(
+              child: Text(
+                "Show Interest",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF3A6351), // Green color for theme consistency
+                ),
               ),
             ),
             const SizedBox(height: 10),
@@ -43,9 +45,9 @@ class _InterestFormModalState extends State<InterestFormModal> {
             // Message Input Field
             TextField(
               controller: _messageController,
-              maxLines: 3,
+              maxLines: 8,
               decoration: InputDecoration(
-                hintText: "Enter your message...",
+                hintText: "Please write a short message to the donor of why you would like to have the item...",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: Colors.grey),

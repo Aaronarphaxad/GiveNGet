@@ -222,7 +222,7 @@ class _DonateScreenState extends State<DonateScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 14,),
+              SizedBox(height:6,),
               Row(    //item name input 
                 children: [  
                 SizedBox(width: 20,),
@@ -232,7 +232,7 @@ class _DonateScreenState extends State<DonateScreen> {
                   child: DropdownButtonFormField<String>(
                      style: TextStyle(
                       fontSize: 16,
-                      color: Color(0xFF3A6351), // ✅ Sets selected text color (Green)
+                      color: Color(0xFF3A6351), 
                     ),
           
                     value: _selectedCondition,

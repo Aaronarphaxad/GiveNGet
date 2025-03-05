@@ -157,6 +157,6 @@ class FavouriteDonationGridListItem extends StatelessWidget {
             )
           ),
       ),
-    );;
+    );
   }
 }
