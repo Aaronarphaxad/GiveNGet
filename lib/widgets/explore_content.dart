@@ -16,7 +16,7 @@ class _ExploreContentState extends State<ExploreContent>
   late TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
 
-  final List<String> _categories = [
+  final List<String> categories = [
     'All',
     'Clothing',
     'Furniture',
@@ -28,7 +28,7 @@ class _ExploreContentState extends State<ExploreContent>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _categories.length, vsync: this);
+    _tabController = TabController(length: categories.length, vsync: this);
   }
 
   @override
@@ -60,8 +60,8 @@ class _ExploreContentState extends State<ExploreContent>
                 setState(
                     () {}); // Refresh to ensure the selected tab is updated correctly
               },
-              tabs: _categories.map((category) {
-                _categories
+              tabs: categories.map((category) {
+                categories
                     .indexOf(category); // Get the index of the category
                 return Padding(
                   padding: const EdgeInsets.symmetric(
@@ -117,7 +117,7 @@ class _ExploreContentState extends State<ExploreContent>
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: _categories.map((category) {
+                children: categories.map((category) {
                   return _buildCategoryContent(
                       category); // Filter content for each category
                 }).toList(),

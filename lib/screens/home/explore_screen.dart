@@ -28,22 +28,52 @@ class _ExploreScreenState extends State<ExploreScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Color(0xFF3A6351), // Keep the text color same
-        unselectedItemColor: Colors.grey.shade600, // Inactive text color
-        selectedIconTheme: const IconThemeData(color: Color(0xFF3A6351),), // More vibrant active icon color
-        unselectedIconTheme: const IconThemeData(color: Colors.grey), // Inactive icon color
-        backgroundColor: Colors.white, // Background color for the bottom bar
-        elevation: 5, // Shadow for the bottom bar
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explore'),
-          BottomNavigationBarItem(icon: Icon(Icons.add_box), label: 'Donate'),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(2),
+          border: Border.all(color: Color(0xFF3A6351))
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Color(0xFF3A6351), // Keep the text color same
+          unselectedItemColor: Colors.grey.shade600, // Inactive text color
+          selectedIconTheme: const IconThemeData(color: Color(0xFF3A6351),), // More vibrant active icon color
+          unselectedIconTheme: const IconThemeData(color: Colors.grey), // Inactive icon color
+          backgroundColor: Colors.white, // Background color for the bottom bar
+          elevation: 5, // Shadow for the bottom bar
+          items: const [
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(top: 2),
+                child: Icon(Icons.explore),
+               ), 
+              label: 'Explore'
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Icon(Icons.add_box),
+              ), 
+              label: 'Donate'
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(top: 2),
+                child: Icon(Icons.favorite),
+                ), 
+              label: 'Favorites',
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(top: 2),
+                child: Icon(Icons.person),
+                ), 
+              label: 'Profile'
+            ),
+          ],
+        ),
       ),
     );
   }

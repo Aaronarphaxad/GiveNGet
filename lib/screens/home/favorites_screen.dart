@@ -4,6 +4,7 @@ import 'package:givenget/models/donation_item.dart';
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
 
+
   List<DonationItem> _getFavourites() {
     return [
         DonationItem(title: 'Sweater', description: 'This is a sweater', category: 'clothing', imageUrl: 'assets/images/sweaters.png', donor: 'Reiben', datePosted: '2/1/2021', availability: true , condition: 'Used-like new'),
@@ -25,7 +26,7 @@ class FavoritesScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         automaticallyImplyLeading: false, 
-        title: const Text('Favorites'),
+        title: const Text('Favourites'),
       ),
       body: Center(
         child: Column(
