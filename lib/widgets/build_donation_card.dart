@@ -59,23 +59,8 @@ Widget buildDonationCard(BuildContext context, DonationItem item) {
                     ),
                   ],
                 ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(  
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        color: const Color.fromARGB(104, 0, 0, 0),
-                      ),           
-                      width: 30,
-                      height: 30,
-                      child: IconButton(onPressed: () {}, icon: Icon(Icons.clear, color: Colors.white, size: 14,),),
-                    ),
-                  ),
-                )
               ],
-            )
+            ),
           ),
       ),
   );
