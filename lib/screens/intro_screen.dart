@@ -40,7 +40,7 @@ class SplashScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Center(
         child: Image.asset(
-          'assets/images/givenget-logo.png',
+          'assets/images/GiveNGet.gif',
           width: 200,
           height: 200,         
         ),

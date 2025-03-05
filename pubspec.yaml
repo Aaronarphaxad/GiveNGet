@@ -28,7 +28,7 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/givenget-logo.png"
-  adaptive_icon_foreground: "assets/images/givenget-logo.png"
+  image_path: "assets/images/GiveNGet.png"
+  adaptive_icon_foreground: "assets/images/GiveNGet.png"
   adaptive_icon_background: "#FFFFFF"
   remove_alpha_ios: true
