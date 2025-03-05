@@ -46,7 +46,7 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: widget.item.imageUrl.isNotEmpty
-                  ?  Image.asset(
+                  ? Image.asset(
                       widget.item.imageUrl,
                       width: double.infinity,
                       height: 200,
@@ -80,13 +80,12 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
             // Availability
             const Text("Availability",
                 style: TextStyle(fontSize: 14, color: Colors.grey)),
-            Text(widget.item.availability ?"Available" :"Unavailable",
+            Text(widget.item.availability ? "Available" : "Unavailable",
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: widget.item.availability 
-                        ? Colors.green
-                        : Colors.red)),
+                    color:
+                        widget.item.availability ? Colors.green : Colors.red)),
             const SizedBox(height: 10),
 
             // Category & Condition (Side by Side)
@@ -157,6 +156,10 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
           ),
           builder: (context) => InterestFormModal(item: widget.item),
         ),
+        backgroundColor:
+            const Color(0xFF3A6351), // Updated to match green color scheme
+        foregroundColor: Colors.white, // Ensures the icon contrasts well
+        elevation: 4, // Adds a subtle shadow for a modern look
         child: const Icon(Icons.add),
       ),
     );

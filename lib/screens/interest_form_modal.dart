@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/models/donation_item.dart';
 
-
 class InterestFormModal extends StatefulWidget {
   final DonationItem item;
 
@@ -22,30 +21,64 @@ class _InterestFormModalState extends State<InterestFormModal> {
       ),
       child: Container(
         padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            // Title
+            Text(
               "Send a message to the donor",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _messageController,
-              maxLines: 3,
-              decoration: const InputDecoration(
-                hintText: "Enter your message...",
-                border: OutlineInputBorder(),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF3A6351), // Green color for theme consistency
               ),
             ),
             const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                // Handle sending message logic here
-                Navigator.pop(context); // Close modal after sending
-              },
-              child: const Text("Send Message"),
+
+            // Message Input Field
+            TextField(
+              controller: _messageController,
+              maxLines: 3,
+              decoration: InputDecoration(
+                hintText: "Enter your message...",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: Color(0xFF3A6351), width: 2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Send Message Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Handle sending message logic here
+                  Navigator.pop(context); // Close modal after sending
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF3A6351), // Theme color
+                  foregroundColor: Colors.white, // White text
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  "Send Message",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
             ),
           ],
         ),
