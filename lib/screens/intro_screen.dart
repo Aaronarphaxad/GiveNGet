@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/screens/auth/signup_screen.dart';
+import 'package:givenget/widgets/custom_green_button.dart';
 import 'dart:async';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'auth/login_screen.dart';
@@ -115,18 +116,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const SizedBox(height: 20),
                 isLastPage
                     ? Center(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF3A6351),
-                              foregroundColor: Colors.white),
+                        child: CustomGreenButton(
+                          text: 'Get Started', 
                           onPressed: () {
-                            Navigator.pushReplacementNamed(context, '/signup');
-                          },
-                          child: const Text(
-                            "Get Started",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
+                          Navigator.pushReplacementNamed(context, '/signup');
+                        })
                       )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
