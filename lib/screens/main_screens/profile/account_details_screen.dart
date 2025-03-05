@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givenget/screens/home/profile_screen.dart';
+import 'package:givenget/screens/main_screens/profile/profile_screen.dart';
 import 'package:givenget/widgets/custom_green_button.dart';
 
 class AccountDetailsScreen extends StatelessWidget {

@@ -1,21 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:givenget/data/mock_data.dart';
 import 'package:givenget/models/donation_item.dart';
+import 'package:givenget/screens/main_screens/explore/donation_detail_screen.dart';
 
-class FavoritesScreen extends StatelessWidget {
+class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
 
+  @override
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
+}
 
-  List<DonationItem> _getFavourites() {
-    return [
-        DonationItem(title: 'Sweater', description: 'This is a sweater', category: 'clothing', imageUrl: 'assets/images/sweaters.png', donor: 'Reiben', datePosted: '2/1/2021', availability: true , condition: 'Used-like new'),
-         DonationItem(title: 'Sweater', description: 'This is a sweater', category: 'clothing', imageUrl: 'assets/images/sweaters.png', donor: 'Reiben', datePosted: '2/1/2021', availability: true , condition: 'Used-like new'),
-          DonationItem(title: 'Sweater', description: 'This is a sweater', category: 'clothing', imageUrl: 'assets/images/sweaters.png', donor: 'Reiben', datePosted: '2/1/2021', availability: true , condition: 'Used-like new'),
-           DonationItem(title: 'Sweater', description: 'This is a sweater', category: 'clothing', imageUrl: 'assets/images/sweaters.png', donor: 'Reiben', datePosted: '2/1/2021', availability: true , condition: 'Used-like new'),
-            DonationItem(title: 'Sweater', description: 'This is a sweater', category: 'clothing', imageUrl: 'assets/images/sweaters.png', donor: 'Reiben', datePosted: '2/1/2021', availability: true , condition: 'Used-like new'),
-             DonationItem(title: 'Sweater', description: 'This is a sweater', category: 'clothing', imageUrl: 'assets/images/sweaters.png', donor: 'Reiben', datePosted: '2/1/2021', availability: true , condition: 'Used-like new'),
-              DonationItem(title: 'Sweater', description: 'This is a sweater', category: 'clothing', imageUrl: 'assets/images/sweaters.png', donor: 'Reiben', datePosted: '2/1/2021', availability: true , condition: 'Used-like new'),
-               DonationItem(title: 'Sweater', description: 'This is a sweater', category: 'clothing', imageUrl: 'assets/images/sweaters.png', donor: 'Reiben', datePosted: '2/1/2021', availability: true , condition: 'Used-like new'),
-    ];
+class _FavoritesScreenState extends State<FavoritesScreen> {
+   void _refreshFavorites() {
+    setState(() {});
+  }
+  
+  void removeFromFavourites(BuildContext context, DonationItem donationItem) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white, // White background
+          title: Text("Remove from Favourites", style: TextStyle(color: Colors.black)),
+          content: Text(
+            "Are you sure you want to remove this item from your favourites?",
+            style: TextStyle(color: Colors.black),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close dialog
+              },
+              child: Text("Cancel", style: TextStyle(color: Color(0xFF3A6351))),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                   mockFavouriteItems.remove(donationItem);
+                });           
+                Navigator.of(context).pop(); // Close dialog
+              },
+              child: Text("Remove", style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -64,9 +94,14 @@ class FavoritesScreen extends StatelessWidget {
                     mainAxisSpacing: 6,  
                     childAspectRatio: 0.78,  
                   ),
-                  itemCount: _getFavourites().length,  
+                  itemCount: mockFavouriteItems.length,  
                   itemBuilder: (context, index) {
-                    return FavouriteDonationGridListItem(favouriteItems: _getFavourites(), index: index);
+                    return FavouriteDonationGridListItem(
+                      favouriteItems: mockFavouriteItems, 
+                      index: index,
+                      removeFromFavourites: removeFromFavourites,
+                      refreshFavourites: _refreshFavorites,
+                      );
                   },
                 ),
              ),
@@ -82,15 +117,25 @@ class FavoritesScreen extends StatelessWidget {
 class FavouriteDonationGridListItem extends StatelessWidget {
   List<DonationItem> favouriteItems;
   int index;
+  final Function(BuildContext, DonationItem) removeFromFavourites;
+  final VoidCallback refreshFavourites;
 
-  FavouriteDonationGridListItem({super.key, required this.favouriteItems, required this.index});
+  FavouriteDonationGridListItem({super.key, required this.favouriteItems, required this.index, required this.removeFromFavourites, required this.refreshFavourites});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-
-
+          // Navigate to the detail page with the selected item
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DonationDetailScreen(
+                item: favouriteItems[index],
+                refreshFavorites: refreshFavourites,
+              ),
+            ),
+          );
       },  // we navigate to detail screen here
       child: Card(
         elevation: 3,
@@ -149,7 +194,10 @@ class FavouriteDonationGridListItem extends StatelessWidget {
                       ),           
                       width: 30,
                       height: 30,
-                      child: IconButton(onPressed: () {}, icon: Icon(Icons.clear, color: Colors.white, size: 14,),),
+                      child: IconButton(onPressed: () {
+                        
+                        removeFromFavourites(context, favouriteItems[index]);
+                      }, icon: Icon(Icons.clear, color: Colors.white, size: 14,),),
                     ),
                   ),
                 )

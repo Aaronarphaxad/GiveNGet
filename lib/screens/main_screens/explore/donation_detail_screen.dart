@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:givenget/data/mock_data.dart';
 import 'package:givenget/models/donation_item.dart';
-import 'package:givenget/screens/interest_form_modal.dart';
+import 'package:givenget/screens/main_screens/explore/interest_form_modal.dart';
 
 class DonationDetailScreen extends StatefulWidget {
   final DonationItem item;
+  final VoidCallback? refreshFavorites; 
 
-  const DonationDetailScreen({super.key, required this.item});
+  const DonationDetailScreen({super.key, required this.item, this.refreshFavorites});
 
   @override
   State<DonationDetailScreen> createState() => _DonationDetailScreenState();
@@ -13,11 +15,68 @@ class DonationDetailScreen extends StatefulWidget {
 
 class _DonationDetailScreenState extends State<DonationDetailScreen> {
   bool isLiked = false; // Track if the donation item is liked
-  int selected = 1; // 1 for details, 2 for intersted
+  int selected = 1; // 1 for details, 2 for interested
 
-  void toggleLike() {
+  void _toggleLike() {
     setState(() {
-      isLiked = !isLiked; // Toggle like state
+      if (mockFavouriteItems.contains(widget.item)) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white, // White background
+            title: Text("Remove from Favourites", style: TextStyle(color: Colors.black)),
+            content: Text(
+              "Are you sure you want to remove this item from your favourites?",
+              style: TextStyle(color: Colors.black),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close dialog
+                },
+                child: Text("Cancel", style: TextStyle(color: Color(0xFF3A6351))),
+              ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    mockFavouriteItems.remove(widget.item);
+                    widget.refreshFavorites?.call();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Removed ${widget.item.title} from Liked Items',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        duration: const Duration(seconds: 2),
+                        backgroundColor: Colors.white,
+                      ),
+                    );
+                  });           
+                  Navigator.of(context).pop(); // Close dialog
+                },
+                child: Text("Remove", style: TextStyle(color: Colors.red)),
+              ),
+            ],
+          );
+        },
+      );
+
+        
+      } else {
+        mockFavouriteItems.add(widget.item);
+        widget.refreshFavorites?.call();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Added ${widget.item.title} to Liked Items',
+              style: TextStyle(color: Colors.black),
+            ),
+            duration: const Duration(seconds: 2),
+            backgroundColor: Colors.white,
+          ),
+        );
+      }
     });
   }
 
@@ -31,10 +90,10 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: toggleLike,
+            onPressed: _toggleLike,
             icon: Icon(
-              isLiked ? Icons.favorite : Icons.favorite_border,
-              color: isLiked ? Colors.red : Colors.grey,
+              mockFavouriteItems.contains(widget.item) ? Icons.favorite : Icons.favorite_border,
+              color: mockFavouriteItems.contains(widget.item) ? Colors.red : Colors.grey,
             ),
           ),
         ],

@@ -4,7 +4,7 @@ import 'package:givenget/widgets/custom_green_button.dart';
 import 'package:givenget/widgets/custom_text_form_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
-import '../home/explore_screen.dart';
+import '../main_screens/explore/explore_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -195,16 +195,18 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(height: 20),
                  CustomGreenButton(
                   text: 'Sign Up', 
-                  onPressed: (){ // removing sign up logic for now
-                     
-                      // Simulate sign up 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Sign Up Successful!'),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
-
+                  onPressed: (){ // removing sign up logic for now                    
+                       // Simulate sign up 
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Sign Up Successful!',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            duration: const Duration(seconds: 2),
+                            backgroundColor: Colors.white,
+                          ),
+                        );
                        Navigator.pushReplacementNamed(context, '/login');
                    }),
                 SizedBox(height: 5,),

@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:givenget/screens/auth/login_screen.dart';
 import 'package:givenget/screens/auth/password_screen.dart';
 import 'package:givenget/screens/auth/signup_screen.dart';
-import 'package:givenget/screens/home/account_details_screen.dart';
-import 'package:givenget/screens/home/explore_screen.dart';
-import 'package:givenget/screens/notification_screen.dart';
-import 'screens/intro_screen.dart';
+import 'package:givenget/screens/main_screens/profile/account_details_screen.dart';
+import 'package:givenget/screens/main_screens/explore/explore_screen.dart';
+import 'package:givenget/screens/main_screens/profile/notification_screen.dart';
+import 'screens/splash_onboarding/intro_screen.dart';
 
 void main() {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);

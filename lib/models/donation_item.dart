@@ -1,5 +1,4 @@
 
-
 class DonationItem {
   final String title;
   final String description;

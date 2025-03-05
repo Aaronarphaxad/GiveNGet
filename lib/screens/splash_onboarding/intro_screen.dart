@@ -3,7 +3,7 @@ import 'package:givenget/screens/auth/signup_screen.dart';
 import 'package:givenget/widgets/custom_green_button.dart';
 import 'dart:async';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'auth/login_screen.dart';
+import '../auth/login_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});

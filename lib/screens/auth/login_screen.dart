@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
 import 'signup_screen.dart';
 import 'password_screen.dart';
-import '../home/explore_screen.dart';
+import '../main_screens/explore/explore_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -155,13 +155,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 text: 'Login', 
                 onPressed: (){ // removing login logic for now
 
-                // Simulate login
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Login Successful!'),
-                          duration: const Duration(seconds: 2),
+                    // Simulate login
+                     ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Login Successful!',
+                          style: TextStyle(color: Colors.black),
                         ),
-                      );
+                        duration: const Duration(seconds: 2),
+                        backgroundColor: Colors.white,
+                      ),
+                    );
 
                   Navigator.pushReplacementNamed(context, '/explore');
                 }

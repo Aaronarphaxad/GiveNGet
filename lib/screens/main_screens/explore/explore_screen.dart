@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/widgets/explore_content.dart';
-import 'donate_screen.dart';
-import 'favorites_screen.dart';
-import 'profile_screen.dart';
+import '../donate_screen.dart';
+import '../favourites_screen.dart';
+import '../profile/profile_screen.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
