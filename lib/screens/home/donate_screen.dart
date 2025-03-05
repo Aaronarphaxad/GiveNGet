@@ -120,7 +120,7 @@ class _DonateScreenState extends State<DonateScreen> {
                       color: Colors.grey, 
                       width: 1.5
                     ),
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(3),
                   ),),
                   Icon(Icons.arrow_drop_down, size: 50, color: Colors.grey,),
                   ],                 
@@ -136,9 +136,8 @@ class _DonateScreenState extends State<DonateScreen> {
             onPressed: () {}, 
             style: ElevatedButton.styleFrom(
               minimumSize: Size(350, 40),
-              side: BorderSide(color: Colors.black),
-              backgroundColor: const Color(0xFFD6F4FF),
-              foregroundColor: Colors.black),
+              backgroundColor: const Color(0xFF3A6351),
+              foregroundColor: Colors.white),
             child: Text('Post', style: TextStyle(fontWeight: FontWeight.bold),),
             ),
           ],

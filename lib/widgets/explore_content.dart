@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/widgets/build_donation_card.dart';
 import '../data/mock_data.dart';
-// import '../models/donation_item.dart';
 import '../widgets/custom_search_delegate.dart';
 
 class ExploreContent extends StatefulWidget {
@@ -11,9 +10,7 @@ class ExploreContent extends StatefulWidget {
   State<ExploreContent> createState() => _ExploreContentState();
 }
 
-class _ExploreContentState extends State<ExploreContent>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _ExploreContentState extends State<ExploreContent> {
   final TextEditingController _searchController = TextEditingController();
 
   final List<String> _categories = [
@@ -25,15 +22,10 @@ class _ExploreContentState extends State<ExploreContent>
     'Other',
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: _categories.length, vsync: this);
-  }
+  String _selectedCategory = 'All'; // Default selected category
 
   @override
   void dispose() {
-    _tabController.dispose();
     _searchController.dispose();
     super.dispose();
   }
@@ -46,44 +38,43 @@ class _ExploreContentState extends State<ExploreContent>
         padding: const EdgeInsets.only(top: 16.0),
         child: Column(
           children: [
-            TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              labelColor: Colors.black, // Color for active tab text
-              unselectedLabelColor:
-                  Colors.grey.shade600, // Color for inactive tab text
-              indicatorColor:
-                  Colors.blueAccent, // Active tab indicator color
-              indicatorWeight: 3.0, // Thickness of the active tab indicator
-              labelPadding: EdgeInsets.zero, // No padding between tabs
-              onTap: (index) {
-                setState(
-                    () {}); // Refresh to ensure the selected tab is updated correctly
-              },
-              tabs: _categories.map((category) {
-                _categories
-                    .indexOf(category); // Get the index of the category
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 5.0), // Horizontal spacing
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                    child: Text(
-                      category,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold, // Bold text for clarity
+            // Scrollable Category Filters using ChoiceChip
+            SizedBox(
+              height: 50, // Limit height for horizontal scrolling
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Row(
+                  children: _categories.map((category) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: ChoiceChip(
+                        label: Text(category),
+                        showCheckmark: false,
+                        selected: _selectedCategory == category,
+                        onSelected: (bool isSelected) {
+                          setState(() {
+                            _selectedCategory = isSelected ? category : 'All';
+                          });
+                        },
+                        selectedColor: const Color(0xFF3A6351), // Green color
+                        labelStyle: TextStyle(
+                          color: _selectedCategory == category
+                              ? Colors.white
+                              : Colors.black, // Contrast text color
+                          fontWeight: FontWeight.bold,
+                        ),
+                        backgroundColor: Colors.white, // Unselected color
                       ),
-                    ),
-                  ),
-                );
-              }).toList(),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
-      
+
             const SizedBox(height: 10),
-      
-            // Search Input Field (New Position)
+
+            // Search Input Field
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
@@ -110,18 +101,12 @@ class _ExploreContentState extends State<ExploreContent>
                 ),
               ),
             ),
-      
+
             const SizedBox(height: 10),
-      
-            // TabBarView (Explore Items)
+
+            // Explore Grid Content (Filtered by Category)
             Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: _categories.map((category) {
-                  return _buildCategoryContent(
-                      category); // Filter content for each category
-                }).toList(),
-              ),
+              child: _buildCategoryContent(_selectedCategory),
             ),
           ],
         ),
@@ -129,29 +114,11 @@ class _ExploreContentState extends State<ExploreContent>
     );
   }
 
-// Explore Grid content
+  // Explore Grid content
   Widget _buildCategoryContent(String category) {
-    // Filter donation items based on the selected category
     final filteredItems =
-        mockDonationItems.where((item) => item.category == category).toList();
+        category == "All" ? mockDonationItems : mockDonationItems.where((item) => item.category == category).toList();
 
-    // If the category is "All", show all items
-    if (category == "All") {
-      return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
-          childAspectRatio: 0.75,
-        ),
-        padding: const EdgeInsets.all(8.0),
-        itemCount: mockDonationItems.length, // Show all items
-        itemBuilder: (context, index) {
-          return buildDonationCard(context, mockDonationItems[index]);
-        },
-      );
-    }
-    // Show filtered items based on the selected category
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
