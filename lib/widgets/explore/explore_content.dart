@@ -32,83 +32,88 @@ class _ExploreContentState extends State<ExploreContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 24.0),
-        child: Column(
-          children: [
-            // Scrollable Category Filters using ChoiceChip
-            SizedBox(
-              height: 50, // Limit height for horizontal scrolling
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Row(
-                  children: categories.map((category) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: ChoiceChip(
-                        label: Text(category),
-                        showCheckmark: false,
-                        selected: _selectedCategory == category,
-                        onSelected: (bool isSelected) {
-                          setState(() {
-                            _selectedCategory = isSelected ? category : 'All';
-                          });
-                        },
-                        selectedColor: const Color(0xFF3A6351), // Green color
-                        labelStyle: TextStyle(
-                          color: _selectedCategory == category
-                              ? Colors.white
-                              : Colors.black, // Contrast text color
-                          fontWeight: FontWeight.bold,
-                        ),
-                        backgroundColor: Colors.white, // Unselected color
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: Padding(
+            padding: const EdgeInsets.only(top: 24.0),
+            child: Column(
+              children: [
+                // Scrollable Category Filters using ChoiceChip
+                SizedBox(
+                  height: 50, // Limit height for horizontal scrolling
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Row(
+                      children: categories.map((category) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: ChoiceChip(
+                            label: Text(category),
+                            showCheckmark: false,
+                            selected: _selectedCategory == category,
+                            onSelected: (bool isSelected) {
+                              setState(() {
+                                _selectedCategory = isSelected ? category : 'All';
+                              });
+                            },
+                            selectedColor: const Color(0xFF3A6351), // Green color
+                            labelStyle: TextStyle(
+                              color: _selectedCategory == category
+                                  ? Colors.white
+                                  : Colors.black, // Contrast text color
+                              fontWeight: FontWeight.bold,
+                            ),
+                            backgroundColor: Colors.white, // Unselected color
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                // Search Input Field
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (value) {
+                      showSearch(
+                        context: context,
+                        delegate: CustomSearchDelegate(mockDonationItems),
+                      );
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Search items...",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(color: Colors.black, width: 1),
                       ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-            // Search Input Field
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                controller: _searchController,
-                onChanged: (value) {
-                  showSearch(
-                    context: context,
-                    delegate: CustomSearchDelegate(mockDonationItems),
-                  );
-                },
-                decoration: InputDecoration(
-                  hintText: "Search items...",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Colors.black, width: 1),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(color: Colors.black, width: 2),
+                      ),
+                      suffixIcon: const Icon(Icons.search, color: Colors.black),
+                      contentPadding:
+                          const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Colors.black, width: 2),
-                  ),
-                  suffixIcon: const Icon(Icons.search, color: Colors.black),
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 ),
-              ),
-            ),
 
-            const SizedBox(height: 10),
+                const SizedBox(height: 10),
 
-            // Explore Grid Content (Filtered by Category)
-            Expanded(
-              child: _buildCategoryContent(_selectedCategory),
+                // Explore Grid Content (Filtered by Category)
+                Expanded(
+                  child: _buildCategoryContent(_selectedCategory),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
