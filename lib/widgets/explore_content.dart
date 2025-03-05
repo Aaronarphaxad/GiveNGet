@@ -124,7 +124,7 @@ class _ExploreContentState extends State<ExploreContent> {
         crossAxisCount: 2,
         crossAxisSpacing: 8.0,
         mainAxisSpacing: 8.0,
-        childAspectRatio: 0.75,
+        childAspectRatio: 0.78,
       ),
       padding: const EdgeInsets.all(8.0),
       itemCount: filteredItems.length,

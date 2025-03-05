@@ -24,7 +24,7 @@ final List<DonationItem> mockDonationItems = [
   DonationItem(
     title: 'Shoes for kids',
     description: 'Perfect desk for students',
-    category: 'Furniture',
+    category: 'Clothing',
     imageUrl: 'assets/images/kids-shoes.jpg',
     donor: 'Isabel',
     datePosted: '10-02-2025',
