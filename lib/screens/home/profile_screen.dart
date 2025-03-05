@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:givenget/screens/home/profile_branch/account_details_screen.dart';
+import 'package:givenget/screens/home/profile_branch/change_language_screen.dart';
+import 'package:givenget/screens/home/profile_branch/help_support_screen.dart';
+import 'package:givenget/screens/home/profile_branch/my_donations_screen.dart';
 import 'package:givenget/screens/home/profile_branch/notification_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../auth/login_screen.dart';
@@ -112,8 +116,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Icon(Icons.account_circle),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      child: Text("Account Details"),
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context)=>AccountDetails()));
+                        },
+                        child: Text("Account Details"),
+                      ),
                     ),
+
                   ],
                 ),
                 decoration: BoxDecoration(
@@ -132,7 +143,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Icon(Icons.volunteer_activism),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      child: Text("My Donations"),
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context)=>MyDonations()));
+                        },
+                        child: Text("My Donations"),
+                      ),
                     ),
                   ],
                 ),
@@ -152,7 +169,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Icon(Icons.language),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      child: Text("Change Language"),
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context)=>ChangeLanguage()));
+                        },
+                        child: Text("Change Language"),
+                      ),
                     ),
                   ],
                 ),
@@ -172,7 +195,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Icon(Icons.support_agent),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      child: Text("Help & Support"),
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context)=>HelpSupport()));
+                        },
+                        child: Text("Help & Support"),
+                      ),
                     ),
                   ],
                 ),
