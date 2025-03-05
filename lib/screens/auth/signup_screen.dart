@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:givenget/screens/auth/login_screen.dart';
-import 'package:givenget/widgets/custom_green_button.dart';
-import 'package:givenget/widgets/custom_text_form_field.dart';
+import 'package:givenget/widgets/components/custom_green_button.dart';
+import 'package:givenget/widgets/components/custom_text_form_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
 import '../main_screens/explore/explore_screen.dart';
+
+//NOTE: Validation and sharedpreferences logic is here however
+//      it has been commented out for simplicity
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -31,7 +33,7 @@ class _SignupScreenState extends State<SignupScreen> {
       final phone = _phoneController.text;
       final password = _passwordController.text;
 
-      // Check if the email is already registered
+      // Checking if the email is already registered
       final existingUser = await AuthService.getUserByEmail(email);
       if (existingUser != null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -215,17 +217,16 @@ class _SignupScreenState extends State<SignupScreen> {
                     children: [ 
                     Text('Already have an account?',style: TextStyle(fontSize: 16,color: const Color.fromARGB(255, 115, 114, 114)),),
                     TextButton(                      
-                      onPressed: (){
-
-                        Navigator.pushReplacementNamed(context, '/login');
-                      }, 
-                            style: TextButton.styleFrom(
+                        onPressed: (){
+                          Navigator.pushReplacementNamed(context, '/login');
+                        }, 
+                        style: TextButton.styleFrom(
                         padding: EdgeInsets.only(left: 4), 
                         minimumSize: Size(0, 0), 
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap, 
                       ),
                       child: Text('Login',                                          
-                    style: TextStyle(
+                      style: TextStyle(
                       fontSize: 16,
                       color: Color.fromARGB(255, 94, 155, 234), 
                       decoration: TextDecoration.underline, 

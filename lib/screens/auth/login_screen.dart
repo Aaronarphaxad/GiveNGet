@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:givenget/widgets/custom_green_button.dart';
-import 'package:givenget/widgets/custom_text_form_field.dart';
+import 'package:givenget/widgets/components/custom_green_button.dart';
+import 'package:givenget/widgets/components/custom_text_form_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
-import 'signup_screen.dart';
-import 'password_screen.dart';
 import '../main_screens/explore/explore_screen.dart';
+
+//NOTE: Validation and sharedpreferences logic is here however
+//      it has been commented out for simplicity
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -154,7 +155,6 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomGreenButton(
                 text: 'Login', 
                 onPressed: (){ // removing login logic for now
-
                     // Simulate login
                      ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -166,7 +166,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         backgroundColor: Colors.white,
                       ),
                     );
-
                   Navigator.pushReplacementNamed(context, '/explore');
                 }
               ),

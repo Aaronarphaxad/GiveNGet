@@ -17,7 +17,7 @@ class _InterestFormModalState extends State<InterestFormModal> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom, // Adjust for keyboard
+        bottom: MediaQuery.of(context).viewInsets.bottom, 
       ),
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -36,13 +36,12 @@ class _InterestFormModalState extends State<InterestFormModal> {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: const Color(0xFF3A6351), // Green color for theme consistency
+                  color: const Color(0xFF3A6351), 
                 ),
               ),
             ),
             const SizedBox(height: 10),
 
-            // Message Input Field
             TextField(
               controller: _messageController,
               maxLines: 8,
@@ -60,17 +59,15 @@ class _InterestFormModalState extends State<InterestFormModal> {
             ),
             const SizedBox(height: 20),
 
-            // Send Message Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle sending message logic here
-                  Navigator.pop(context); // Close modal after sending
+                  Navigator.pop(context); 
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3A6351), // Theme color
-                  foregroundColor: Colors.white, // White text
+                  backgroundColor: const Color(0xFF3A6351), 
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

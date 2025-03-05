@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:givenget/widgets/profile/custom_red_button.dart';
+import 'package:givenget/widgets/profile/profile_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../auth/login_screen.dart';
 import '../../auth/auth_service.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -159,93 +160,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-class ProfileItem extends StatelessWidget {
-  IconData itemListIcon;
-  String itemListName;
-   final VoidCallback onPressed;
-
-  ProfileItem({
-    super.key,
-    required this.itemListIcon,
-    required this.itemListName, 
-    required this.onPressed
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 20,right: 20),
-      child: GestureDetector(
-        onTap: onPressed,
-        child: Container(
-          height: 44,
-          decoration: BoxDecoration(
-            color: Color.fromARGB(231, 58, 99, 81),
-             borderRadius: BorderRadius.circular(3), 
-          ),
-          child: Row(
-            children: [
-              SizedBox(width: 20,),
-              Icon(itemListIcon, color: Colors.white,),
-              SizedBox(width: 10,),
-              Text('$itemListName', style: TextStyle(color: Colors.white),),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Icon(Icons.keyboard_arrow_right, color: Colors.white,),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 
-class CustomRedButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
 
-  const CustomRedButton({
-    super.key,
-    required this.text,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 20,right: 20),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.pushReplacementNamed(context, '/login');
-         },
-        child: SizedBox(
-          width: double.infinity, 
-          height: 40, 
-          child: ElevatedButton(
-            onPressed: onPressed, 
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white, 
-              foregroundColor: Colors.white, 
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: Color(0xFFBA0000), width: 1),
-                borderRadius: BorderRadius.circular(20), 
-              ),
-              
-            ),
-            child: Text(
-              text,
-              style: const TextStyle(fontSize: 16, color: Color(0xFFBA0000)),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}

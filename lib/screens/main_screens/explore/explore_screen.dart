@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givenget/widgets/explore_content.dart';
+import 'package:givenget/widgets/explore/explore_content.dart';
 import '../donate_screen.dart';
 import '../favourites_screen.dart';
 import '../profile/profile_screen.dart';
@@ -37,10 +37,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Color(0xFF3A6351), // Keep the text color same
-          unselectedItemColor: Colors.grey.shade600, // Inactive text color
-          selectedIconTheme: const IconThemeData(color: Color(0xFF3A6351),), // More vibrant active icon color
-          unselectedIconTheme: const IconThemeData(color: Colors.grey), // Inactive icon color
+          selectedItemColor: Color(0xFF3A6351), //active color
+          unselectedItemColor: Colors.grey.shade600, // Inactive color
+          selectedIconTheme: const IconThemeData(color: Color(0xFF3A6351),),//active color
+          unselectedIconTheme: const IconThemeData(color: Colors.grey),// Inactive color
           backgroundColor: Colors.white, // Background color for the bottom bar
           elevation: 5, // Shadow for the bottom bar
           items: const [

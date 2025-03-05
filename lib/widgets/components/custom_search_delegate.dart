@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/donation_item.dart';
+import '../../models/donation_item.dart';
 
 class CustomSearchDelegate extends SearchDelegate<String> {
   final List<DonationItem> allItems;

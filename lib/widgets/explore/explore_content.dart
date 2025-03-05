@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:givenget/widgets/build_donation_card.dart';
-import '../data/mock_data.dart';
-import '../widgets/custom_search_delegate.dart';
+import 'package:givenget/widgets/explore/build_donation_card.dart';
+import '../../data/mock_data.dart';
+import '../components/custom_search_delegate.dart';
 
 class ExploreContent extends StatefulWidget {
   const ExploreContent({super.key});

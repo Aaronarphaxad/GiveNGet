@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:givenget/widgets/custom_green_button.dart';
+import 'package:givenget/widgets/components/custom_green_button.dart';
+import 'package:givenget/widgets/donate/custom_text_input.dart';
+import 'package:givenget/widgets/donate/upload_image.dart';
 import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
@@ -34,7 +36,7 @@ class _DonateScreenState extends State<DonateScreen> {
 
   TextEditingController _itemNameController = TextEditingController();
   TextEditingController _itemDescriptionController = TextEditingController();
-  List<String> selectedCategories = [];  // Stores selected item
+  List<String> selectedCategories = []; 
   String? _selectedCondition;
   TextEditingController _locationController = TextEditingController();
 
@@ -160,7 +162,6 @@ class _DonateScreenState extends State<DonateScreen> {
                                 "Select Categories",
                                 style: TextStyle(fontSize: 16, color: Color(0xFF3A6351), ),
                               ),
-                              // ❌ Hides Default Chips
                               chipDisplay: MultiSelectChipDisplay.none(),
                               onConfirm: (values) {
                                 setState(() {
@@ -168,12 +169,10 @@ class _DonateScreenState extends State<DonateScreen> {
                                 });
                               },
                             
-                              backgroundColor: Colors.white, // ✅ Background of the selection dialog
+                              backgroundColor: Colors.white, 
                               
                             ),
                             const SizedBox(height: 10),
-                
-                            // ✅ Custom Chip Display (Green Squares Below Dropdown)
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Wrap(
@@ -223,7 +222,7 @@ class _DonateScreenState extends State<DonateScreen> {
                 ),
               ),
               SizedBox(height:6,),
-              Row(    //item name input 
+              Row(   
                 children: [  
                 SizedBox(width: 20,),
                 Expanded(child: Text('Condition: ')),
@@ -288,76 +287,3 @@ class _DonateScreenState extends State<DonateScreen> {
 }
 
 
-class CustomTextInput extends StatefulWidget {
-  final String customInputLabel;
-  int? maxLines = 1;
-  TextEditingController controller;
-  final String? Function(String?) validation;
-  
-  
-  CustomTextInput({
-    super.key, required this.controller, required this.customInputLabel, this.maxLines, required this.validation,
-  });
-
-  @override
-  State<CustomTextInput> createState() => _CustomTextInputState();
-}
-
-class _CustomTextInputState extends State<CustomTextInput> {
-  @override
-  Widget build(BuildContext context) {
-    return Row(    //item name input 
-      children: [  
-      SizedBox(width: 20,),
-      Expanded(child: Text(widget.customInputLabel)),
-      Expanded(
-        flex: 3,
-        child: TextFormField(  
-          controller: widget.controller,    
-          cursorColor: const Color(0xFF3A6351), 
-          style: TextStyle(color: Color(0xFF3A6351), ),
-          decoration: InputDecoration(
-            focusedBorder:  OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF3A6351), width: 2)
-            ),
-            border: OutlineInputBorder(),
-          ),
-          maxLines: widget.maxLines,
-          validator: widget.validation, 
-        ),
-      ),
-      SizedBox(width: 20,),
-     ],
-    );
-  }
-}
-
-class UploadImageWidget extends StatefulWidget {
-  final Widget child;
-
-  
-  UploadImageWidget({
-    super.key, required this.child,
-  });
-
-  @override
-  State<UploadImageWidget> createState() => _UploadImageWidgetState();
-}
-
-class _UploadImageWidgetState extends State<UploadImageWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      width: 100,
-      decoration: BoxDecoration(
-        color: Colors.white, 
-        border: Border.all(
-          color: Colors.grey, 
-        ),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: widget.child
-    );
-  }
-}

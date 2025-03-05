@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givenget/screens/main_screens/profile/profile_screen.dart';
-import 'package:givenget/widgets/custom_green_button.dart';
+import 'package:givenget/widgets/components/custom_green_button.dart';
 
 class AccountDetailsScreen extends StatelessWidget {
   const AccountDetailsScreen({super.key});
@@ -11,30 +10,30 @@ class AccountDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Account Details'),
         centerTitle: true,
-                actions: [
+          actions: [
           Stack(
-            alignment: Alignment.bottomLeft,
-            children: [
-              Icon(Icons.notifications_active, color: Color.fromARGB(255, 162, 1, 1),size: 30,),
-             Container(
-              width: 16,
-              height: 16, 
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 162, 1, 1),
-                shape: BoxShape.circle, 
-              ),
-              alignment: Alignment.center, 
-              child: const Text(
-                '5',
-                style: TextStyle(
-                  color: Colors.white, 
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
+              alignment: Alignment.bottomLeft,
+              children: [
+                Icon(Icons.notifications_active, color: Color.fromARGB(255, 162, 1, 1),size: 30,),
+              Container(
+                width: 16,
+                height: 16, 
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 162, 1, 1),
+                  shape: BoxShape.circle, 
+                ),
+                alignment: Alignment.center, 
+                child: const Text(
+                  '5',
+                  style: TextStyle(
+                    color: Colors.white, 
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
+              ]           
             ),
-            ]           
-          ),
           SizedBox(width: 16,),
         ],
       ),
@@ -47,7 +46,7 @@ class AccountDetailsScreen extends StatelessWidget {
                 width: double.infinity,
                 child: Image.asset(
                   'assets/images/big-profile-image.png',
-                  fit: BoxFit.cover, // ✅ Ensures the image fills properly
+                  fit: BoxFit.cover, 
                 ),
             ),
             Padding(
@@ -97,16 +96,16 @@ class AccountDetailsScreen extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 2, // ✅ Allows label to take some space
+            flex: 2, 
             child: Text(
               label,
               style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
-            flex: 3, // ✅ Gives more space for value and aligns it properly
+            flex: 3, 
             child: Align(
-              alignment: Alignment.centerLeft, // ✅ Forces text to start from the left
+              alignment: Alignment.centerLeft, 
               child: Text(
                 value,
                 style: TextStyle(color: Colors.white, fontSize: 16),
@@ -118,7 +117,6 @@ class AccountDetailsScreen extends StatelessWidget {
     );
   }
 
-  // ✅ Star Rating Row
   Widget _buildRatingRow() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

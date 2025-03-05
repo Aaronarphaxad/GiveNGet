@@ -21,10 +21,7 @@ class GiveNGetApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'GiveNGet',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      routes: {
+      routes: { // routing
         '/' : (context){ return IntroScreen();},
         '/signup' : (context) {return SignupScreen();},
         '/login' : (context) {return LoginScreen();},

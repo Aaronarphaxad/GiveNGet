@@ -30,7 +30,6 @@ class NotificationsScreen extends StatelessWidget {
               NotificationCard(),
               NotificationCard(),
               NotificationCard(),
-              
             ],
           ),
         ),

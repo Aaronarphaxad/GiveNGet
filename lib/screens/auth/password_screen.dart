@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givenget/screens/auth/signup_screen.dart';
-import 'package:givenget/widgets/custom_green_button.dart';
-import 'package:givenget/widgets/custom_text_form_field.dart';
+import 'package:givenget/widgets/components/custom_green_button.dart';
+import 'package:givenget/widgets/components/custom_text_form_field.dart';
 import '../auth/auth_service.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
