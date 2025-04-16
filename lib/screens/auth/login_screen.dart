@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 import 'package:givenget/widgets/components/custom_text_form_field.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
 import '../main_screens/explore/explore_screen.dart';
 
@@ -18,7 +18,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
+/*
   void _login() async {
     final email = _emailController.text;
     final password = _passwordController.text;
@@ -71,6 +71,9 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
+  */
+
+  
 
   @override
   Widget build(BuildContext context) {

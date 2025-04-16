@@ -28,6 +28,7 @@ class ForgotPasswordScreen extends StatelessWidget {
         return;
       }
 
+/*
       // Check if the email exists
       final user = await AuthService.getUserByEmail(email);
       if (user == null) {
@@ -39,7 +40,7 @@ class ForgotPasswordScreen extends StatelessWidget {
         );
         return;
       }
-
+*/
       // Simulate sending password reset instructions
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

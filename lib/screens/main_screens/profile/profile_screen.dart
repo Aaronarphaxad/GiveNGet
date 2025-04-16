@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/widgets/profile/custom_red_button.dart';
 import 'package:givenget/widgets/profile/profile_item.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 import '../../auth/auth_service.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -27,6 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
   */
 
+/*
   // Load user data from SharedPreferences 
   _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -45,6 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     }
   }
+*/
 
   @override
   Widget build(BuildContext context) {

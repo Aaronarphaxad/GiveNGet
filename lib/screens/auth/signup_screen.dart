@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 import 'package:givenget/widgets/components/custom_text_form_field.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'auth_service.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
+import 'package:givenget/services/auth_service.dart';
 import '../main_screens/explore/explore_screen.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-//NOTE: Validation and sharedpreferences logic is here however
-//      it has been commented out for simplicity
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -23,44 +23,28 @@ class _SignupScreenState extends State<SignupScreen> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-
-  void _signup() async {
-    if (_formKey.currentState!.validate()) {
-      // Form is valid, proceed with signup
-      final firstName = _firstNameController.text;
-      final lastName = _lastNameController.text;
-      final email = _emailController.text;
-      final phone = _phoneController.text;
-      final password = _passwordController.text;
-
-      // Checking if the email is already registered
-      final existingUser = await AuthService.getUserByEmail(email);
-      if (existingUser != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Email already registered'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-        return;
-      }
-
-      await AuthService.saveUserDetails(
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phone: phone,
-        password: password,
-        userStatus: 'user',
-      );
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('currentUserEmail', email);
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ExploreScreen()),
-      );
+  
+  void _registerUser() async {
+    if (!_formKey.currentState!.validate()) {
+      print('⚠️ Form is not valid');
+      return;
     }
+    final authService = AuthService();
+
+    final signupData = {
+      'name': '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}',
+      'email': _emailController.text.trim(),
+      'phoneNum': _phoneController.text.trim(),
+      'password': _passwordController.text,
+      'location': 'unknown', // can replace with real input if needed
+    };
+
+    await authService.registerUser(
+      name: '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}',
+      email: _emailController.text.trim(),
+      phone: _phoneController.text.trim(),
+      password: _passwordController.text,
+    );
   }
 
   @override
@@ -197,20 +181,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(height: 20),
                  CustomGreenButton(
                   text: 'Sign Up', 
-                  onPressed: (){ // removing sign up logic for now                    
-                       // Simulate sign up 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Sign Up Successful!',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            duration: const Duration(seconds: 2),
-                            backgroundColor: Colors.white,
-                          ),
-                        );
-                       Navigator.pushReplacementNamed(context, '/login');
-                   }),
+                  onPressed: () {
+                     _registerUser();
+                  }),
                 SizedBox(height: 5,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -247,3 +220,67 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 }
 
+
+
+
+
+
+                    /*
+                     // removing sign up logic for now                    
+                       // Simulate sign up 
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Sign Up Successful!',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            duration: const Duration(seconds: 2),
+                            backgroundColor: Colors.white,
+                          ),
+                        );
+                       Navigator.pushReplacementNamed(context, '/login');
+                    */
+
+
+
+/*
+OLD SHARED PREFERENCES CODE
+  void _signup() async {
+    if (_formKey.currentState!.validate()) {
+      // Form is valid, proceed with signup
+      final firstName = _firstNameController.text;
+      final lastName = _lastNameController.text;
+      final email = _emailController.text;
+      final phone = _phoneController.text;
+      final password = _passwordController.text;
+
+      // Checking if the email is already registered
+      final existingUser = await AuthService.getUserByEmail(email);
+      if (existingUser != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Email already registered'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        return;
+      }
+
+      await AuthService.saveUserDetails(
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        password: password,
+        userStatus: 'user',
+      );
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('currentUserEmail', email);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ExploreScreen()),
+      );
+    }
+  }
+  */

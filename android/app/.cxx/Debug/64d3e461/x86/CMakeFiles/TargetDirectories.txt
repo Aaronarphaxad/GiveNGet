@@ -1,0 +1,2 @@
+/Users/isabelagbu/Music/GiveNGet/android/app/.cxx/Debug/64d3e461/x86/CMakeFiles/edit_cache.dir
+/Users/isabelagbu/Music/GiveNGet/android/app/.cxx/Debug/64d3e461/x86/CMakeFiles/rebuild_cache.dir

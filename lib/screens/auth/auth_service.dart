@@ -1,3 +1,4 @@
+/*
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
@@ -59,3 +60,4 @@ class AuthService {
     return user != null && user['password'] == password;
   }
 }
+*/
