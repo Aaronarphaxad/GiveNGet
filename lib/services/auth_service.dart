@@ -4,7 +4,8 @@ import 'dart:convert';
 class AuthService {
   static const String _clientId = 'givenget';
   static const String _clientSecret = 'SuperSecret';
-  static const String _tokenEndpoint = 'http://10.0.2.2:9000/oauth2/token';
+  // CHANGE THE IP BELOW TO YOUR PC'S IP OR ELSE IT WON'T WORK
+  static const String _tokenEndpoint = 'http://0.0.0.0:9000/oauth2/token';
   static const List<String> _scopes = ['givenget:read', 'givenget:write'];
 
   Future<String?> getAccessToken() async {
@@ -44,6 +45,9 @@ class AuthService {
     required String password,
     String location = 'unknown',
   }) async {
+    // Get the access token
+    print('Registering user...');
+
     final token = await getAccessToken();
     print("My Token: $token");
     if (token == null) {
@@ -60,16 +64,17 @@ class AuthService {
     };
 
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:8080/api/givenget/auth/signup'), // update path if different
+      // CHANGE THE IP BELOW TO YOUR PC'S IP OR ELSE IT WON'T WORK
+      Uri.parse('http://0.0.0.0:8080/api/givenget/auth/signup'), // update path if different
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
+        // 'Authorization': 'Bearer $token',
       },
       body: jsonEncode(signupRequest),
     );
 
     if (response.statusCode == 200) {
-      print('✅ User registered successfully');
+      print("✅ User registered successfully: ${response.body}");
     } else if (response.statusCode == 400) {
       print('⚠️ Email already exists: ${response.body}');
     } else {
@@ -77,4 +82,32 @@ class AuthService {
       print('❌ Registration failed: ${response.statusCode} - ${response.body}');
     }
   }
+
+Future<bool> loginUser({
+  required String email,
+  required String password,
+}) async {
+  final loginRequest = {
+    'email': email,
+    'password': password,
+  };
+
+  final response = await http.post(
+    // CHANGE THE IP BELOW TO YOUR PC'S IP OR ELSE IT WON'T WORK
+    Uri.parse('http://0.0.0.0:8080/api/givenget/auth/login'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(loginRequest),
+  );
+
+  if (response.statusCode == 200) {
+    print('✅ Login success');
+    return true;
+  } else {
+    print('❌ Login failed: ${response.statusCode}');
+    return false;
+  }
+}
+
 }

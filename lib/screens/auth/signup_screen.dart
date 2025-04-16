@@ -25,26 +25,55 @@ class _SignupScreenState extends State<SignupScreen> {
   final _confirmPasswordController = TextEditingController();
   
   void _registerUser() async {
-    if (!_formKey.currentState!.validate()) {
-      print('⚠️ Form is not valid');
-      return;
+  if (!_formKey.currentState!.validate()) {
+    print('⚠️ Form is not valid');
+    return;
+  }
+
+  // Show loading indicator
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => const Center(
+      child: CircularProgressIndicator(color: Colors.green,),
+    ),
+  );
+
+  final authService = AuthService();
+
+    try {
+      await authService.registerUser(
+        name: '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}',
+        email: _emailController.text.trim(),
+        phone: _phoneController.text.trim(),
+        password: _passwordController.text,
+      );
+
+      // Close loading indicator
+      Navigator.pop(context);
+
+      // Show success (you can navigate here if needed)
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('✅ Registration successful'),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 2),
+        ),
+      );
+       Navigator.pushReplacementNamed(context, '/login');
+    } catch (e) {
+      // Close loading indicator
+      Navigator.pop(context);
+
+      // Show error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('❌ Registration failed: $e'),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
     }
-    final authService = AuthService();
-
-    final signupData = {
-      'name': '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}',
-      'email': _emailController.text.trim(),
-      'phoneNum': _phoneController.text.trim(),
-      'password': _passwordController.text,
-      'location': 'unknown', // can replace with real input if needed
-    };
-
-    await authService.registerUser(
-      name: '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}',
-      email: _emailController.text.trim(),
-      phone: _phoneController.text.trim(),
-      password: _passwordController.text,
-    );
   }
 
   @override
