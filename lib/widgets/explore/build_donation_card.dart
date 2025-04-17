@@ -30,7 +30,7 @@ Widget buildDonationCard(BuildContext context, DonationItem item) {
                       width: double.infinity, 
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(14),
-                        child: Image.asset(
+                        child: Image.network(
                           item.imageUrl,
                           fit: BoxFit.fill, 
                         ),

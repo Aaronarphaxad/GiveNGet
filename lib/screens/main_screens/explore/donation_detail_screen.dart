@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:givenget/data/mock_data.dart';
 import 'package:givenget/models/donation_item.dart';
 import 'package:givenget/screens/main_screens/explore/interest_form_modal.dart';
+import 'package:givenget/services/items_service.dart';
+import 'package:givenget/services/session_manager.dart';
 import 'package:givenget/widgets/explore/details.dart';
 import 'package:givenget/widgets/explore/details_interested_nav.dart';
 import 'package:givenget/widgets/explore/interested.dart';
@@ -19,67 +21,102 @@ class DonationDetailScreen extends StatefulWidget {
 class _DonationDetailScreenState extends State<DonationDetailScreen> {
   bool isLiked = false; // Track if the donation item is liked
   int selected = 1; // 1 for details, 2 for interested
+   final currentUser = SessionManager().getCurrentUser();
 
-  void _toggleLike() {
-    setState(() {
-      if (mockFavouriteItems.contains(widget.item)) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Colors.white, // White background
-            title: Text("Remove from Favourites", style: TextStyle(color: Colors.black)),
-            content: Text(
-              "Are you sure you want to remove this item from your favourites?",
-              style: TextStyle(color: Colors.black),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close dialog
-                },
-                child: Text("Cancel", style: TextStyle(color: Color(0xFF3A6351))),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    mockFavouriteItems.remove(widget.item);
-                    widget.refreshFavorites?.call();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Removed ${widget.item.title} from Liked Items',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        duration: const Duration(seconds: 2),
-                        backgroundColor: Colors.white,
-                      ),
-                    );
-                  });           
-                  Navigator.of(context).pop(); // Close dialog
-                },
-                child: Text("Remove", style: TextStyle(color: Colors.red)),
-              ),
-            ],
-          );
-        },
-      );     
-      } else {
-        mockFavouriteItems.add(widget.item);
-        widget.refreshFavorites?.call();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Added ${widget.item.title} to Liked Items',
-              style: TextStyle(color: Colors.black),
-            ),
-            duration: const Duration(seconds: 2),
-            backgroundColor: Colors.white,
-          ),
-        );
-      }
-    });
+  
+
+void _toggleLike() async {
+  if (currentUser == null) {
+    print("❌ No logged-in user found.");
+    return;
   }
+
+  final alreadyLiked = currentUser!.likedItems.any((item) => item.id == widget.item.id);
+
+  if (alreadyLiked) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: const Text("Remove from Favourites", style: TextStyle(color: Colors.black)),
+          content: const Text(
+            "Are you sure you want to remove this item from your favourites?",
+            style: TextStyle(color: Colors.black),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Cancel", style: TextStyle(color: Color(0xFF3A6351))),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop(); // Dismiss dialog first
+
+                await Future.delayed(const Duration(milliseconds: 100)); // Wait a bit for dialog to close
+
+                setState(() {
+                  currentUser!.likedItems.removeWhere((item) => item.id == widget.item.id);
+                });
+
+                final success = await ItemsService().updateUserLikedItems(
+                  userId: currentUser!.id,
+                  currentUser: currentUser!,
+                  likedItem: widget.item,
+                );
+
+                if (success) {
+                  widget.refreshFavorites?.call();
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Removed ${widget.item.title} from Liked Items',
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: const Color(0xFFDFF5E3), // Light green
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                } else {
+                  print('❌ Failed to update user');
+                }
+              },
+              child: const Text("Remove", style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  } else {
+    setState(() {
+      currentUser!.likedItems.add(widget.item);
+    });
+
+    final success = await ItemsService().updateUserLikedItems(
+      userId: currentUser!.id,
+      currentUser: currentUser!,
+      likedItem: widget.item,
+    );
+
+    if (success) {
+      widget.refreshFavorites?.call();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Added ${widget.item.title} to Liked Items',
+            style: const TextStyle(color: Colors.black),
+          ),
+          backgroundColor: const Color(0xFFDFF5E3),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    } else {
+      print('❌ Failed to update user');
+    }
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +129,13 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
         actions: [
           IconButton(
             onPressed: _toggleLike,
-            icon: Icon(
-              mockFavouriteItems.contains(widget.item) ? Icons.favorite : Icons.favorite_border,
-              color: mockFavouriteItems.contains(widget.item) ? Colors.red : Colors.grey,
+            icon: Icon(          
+              currentUser!.likedItems.any((item) => item.id == widget.item.id)
+                  ? Icons.favorite
+                  : Icons.favorite_border,
+              color: currentUser!.likedItems.any((item) => item.id == widget.item.id)
+                  ? Colors.red
+                  : Colors.grey,
             ),
           ),
         ],
@@ -104,7 +145,7 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             widget.item.imageUrl.isNotEmpty
-                ? Image.asset(
+                ? Image.network(
                     widget.item.imageUrl,
                     width: double.infinity,  
                     height: 300,  

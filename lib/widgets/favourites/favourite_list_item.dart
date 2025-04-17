@@ -42,7 +42,7 @@ class FavouriteDonationGridListItem extends StatelessWidget {
                       width: double.infinity, 
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(14),
-                        child: Image.asset(
+                        child: Image.network(
                           favouriteItems[index].imageUrl,
                           fit: BoxFit.fill, 
                         ),

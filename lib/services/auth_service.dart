@@ -1,3 +1,5 @@
+import 'package:givenget/services/session_manager.dart';
+import 'package:givenget/services/user_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -5,7 +7,7 @@ class AuthService {
   static const String _clientId = 'givenget';
   static const String _clientSecret = 'SuperSecret';
   // CHANGE THE IP BELOW TO YOUR PC'S IP OR ELSE IT WON'T WORK
-  static const String _tokenEndpoint = 'http://0.0.0.0:9000/oauth2/token';
+  static const String _tokenEndpoint = 'http://192.168.1.87:9000/oauth2/token';
   static const List<String> _scopes = ['givenget:read', 'givenget:write'];
 
   Future<String?> getAccessToken() async {
@@ -65,7 +67,7 @@ class AuthService {
 
     final response = await http.post(
       // CHANGE THE IP BELOW TO YOUR PC'S IP OR ELSE IT WON'T WORK
-      Uri.parse('http://0.0.0.0:8080/api/givenget/auth/signup'), // update path if different
+      Uri.parse('http://192.168.1.87:8080/api/givenget/auth/signup'), // update path if different
       headers: {
         'Content-Type': 'application/json',
         // 'Authorization': 'Bearer $token',
@@ -93,8 +95,7 @@ Future<bool> loginUser({
   };
 
   final response = await http.post(
-    // CHANGE THE IP BELOW TO YOUR PC'S IP OR ELSE IT WON'T WORK
-    Uri.parse('http://0.0.0.0:8080/api/givenget/auth/login'),
+    Uri.parse('http://192.168.1.87:8080/api/givenget/auth/login'),
     headers: {
       'Content-Type': 'application/json',
     },
@@ -102,7 +103,26 @@ Future<bool> loginUser({
   );
 
   if (response.statusCode == 200) {
-    print('✅ Login success');
+    print(response.body);
+    final data = jsonDecode(response.body);
+    final userId = data['userId']; // Make sure this matches your backend
+    SessionManager().setUserId(userId);
+
+    print('✅ Login success. User ID: $userId');
+
+    // 🔄 Fetch the full user object
+    final userService = UserService();
+    final user = await userService.fetchUserById(userId);
+
+    if (user != null) {
+      print('👤 Logged in user: ${user.name}, ${user.email}');
+      // You can optionally store this user globally
+      SessionManager().setCurrentUser(user); // Make sure this method exists
+    } else {
+      print('⚠️ Could not load user details after login');
+    }
+
+     print('👤 Logged in as: ${SessionManager().getCurrentUser()?.name}');
     return true;
   } else {
     print('❌ Login failed: ${response.statusCode}');

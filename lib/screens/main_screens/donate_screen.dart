@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:givenget/services/pick_image_from_gallery.dart';
+import 'package:givenget/services/upload_to_cloudinary.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 import 'package:givenget/widgets/donate/custom_text_input.dart';
 import 'package:givenget/widgets/donate/upload_image.dart';
@@ -15,6 +17,17 @@ class DonateScreen extends StatefulWidget {
 }
 
 class _DonateScreenState extends State<DonateScreen> {
+
+    void handleImageUpload() async {
+      final image = await pickImageFromGallery();
+      if (image != null) {
+        final url = await uploadToCloudinary(image);
+        if (url != null) {
+          print('✅ Image URL: $url');
+          // You can now display this image or send it to your backend
+        }
+      }
+    }
 
     final List<String> categories = [
     'Clothing',
