@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givenget/services/auth_service.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 import 'package:givenget/widgets/components/custom_text_form_field.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
 import '../main_screens/explore/explore_screen.dart';
 
@@ -34,7 +34,7 @@ void _login() async {
 
   try {
     final success = await AuthService().loginUser(
-      email: email,
+      username: email,
       password: password,
     );
 

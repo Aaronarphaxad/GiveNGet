@@ -43,10 +43,12 @@ class _SignupScreenState extends State<SignupScreen> {
 
     try {
       await authService.registerUser(
-        name: '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}',
-        email: _emailController.text.trim(),
-        phone: _phoneController.text.trim(),
+        // name: '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}',
+        username: _emailController.text.trim(),
         password: _passwordController.text,
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim(),
+        phone: _phoneController.text.trim(),
       );
 
       // Close loading indicator
