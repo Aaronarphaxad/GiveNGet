@@ -120,6 +120,34 @@ Future<List<DonationItem>> fetchLikedItems(String userId) async {
   }
 }
 
+Future<bool> submitDonationItem(DonationItem item) async {
+  final url = Uri.parse('http://192.168.1.87:8080/api/givenget/items');
+  final accessToken = await AuthService().getAccessToken();
+
+  try {
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode(item.toJson()),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print("✅ Item created: ${item.title}");
+      return true;
+    } else {
+      print("❌ Failed to create item: ${response.statusCode}");
+      print("Response: ${response.body}");
+      return false;
+    }
+  } catch (e) {
+    print("🔥 Error posting item: $e");
+    return false;
+  }
+}
+
 
 
 

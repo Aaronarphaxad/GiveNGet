@@ -1,6 +1,12 @@
+import 'dart:io';
+import 'package:givenget/screens/main_screens/explore/explore_screen.dart';
+import 'package:givenget/services/items_service.dart';
+import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
-import 'package:givenget/services/pick_image_from_gallery.dart';
+import 'package:givenget/models/donation_item.dart';
+import 'package:givenget/services/session_manager.dart';
 import 'package:givenget/services/upload_to_cloudinary.dart';
+import 'package:givenget/utils/CustomUploadImageWidget.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 import 'package:givenget/widgets/donate/custom_text_input.dart';
 import 'package:givenget/widgets/donate/upload_image.dart';
@@ -17,17 +23,6 @@ class DonateScreen extends StatefulWidget {
 }
 
 class _DonateScreenState extends State<DonateScreen> {
-
-    void handleImageUpload() async {
-      final image = await pickImageFromGallery();
-      if (image != null) {
-        final url = await uploadToCloudinary(image);
-        if (url != null) {
-          print('✅ Image URL: $url');
-          // You can now display this image or send it to your backend
-        }
-      }
-    }
 
     final List<String> categories = [
     'Clothing',
@@ -46,12 +41,82 @@ class _DonateScreenState extends State<DonateScreen> {
   ];
 
   final _formKey = GlobalKey<FormState>();
-
+  final uuid = Uuid();
   TextEditingController _itemNameController = TextEditingController();
   TextEditingController _itemDescriptionController = TextEditingController();
   List<String> selectedCategories = []; 
   String? _selectedCondition;
+  File? _selectedImage;
+  bool _isLoading = false;
   TextEditingController _locationController = TextEditingController();
+
+
+
+Future<void> _submitForm() async {
+  if (_formKey.currentState!.validate()) {
+    if (_selectedImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please upload an image.')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final String donorId = SessionManager().getCurrentUser()!.id;
+
+
+      final imageUrl = await uploadToCloudinary(_selectedImage!);
+      if (imageUrl == null) {
+        print("❌ Image upload failed");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('❌ Image upload failed')),
+        );
+        return;
+      }
+
+      final item = DonationItem(
+        id: uuid.v4(),
+        title: _itemNameController.text.trim(),
+        description: _itemDescriptionController.text.trim(),
+        category: selectedCategories.isNotEmpty ? selectedCategories.first : '',
+        imageUrl: imageUrl,
+        donor: donorId,
+        location: _locationController.text.trim(),
+        datePosted: DateTime.now().toLocal().toIso8601String().split('T').first,
+        availability: true,
+        condition: _selectedCondition ?? '',
+      );
+
+      final success = await ItemsService().submitDonationItem(item);
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('🎉 Donation posted successfully!')),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ExploreScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('❌ Failed to post donation.')),
+        );
+      }
+    } catch (e) {
+      print("🔥 Error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('❌ An error occurred')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -67,51 +132,35 @@ class _DonateScreenState extends State<DonateScreen> {
           key: _formKey,
           child: Column(
             children: [
-              Container( //where uploaded images will go
+              Container(
                 color: const Color.fromARGB(209, 58, 99, 81),
                 height: 250,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      UploadImageWidget(child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.cloud_upload,color: Colors.grey,),
-                          Text('upload image',style: TextStyle(color: Colors.grey, fontSize: 12),)
-                        ],
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: CustomUploadImageWidget(
+                        onImageSelected: (File file) {
+                          setState(() {
+                            _selectedImage = file;
+                          });
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.cloud_upload, color: Colors.grey, size: 40),
+                            SizedBox(height: 8),
+                            Text(
+                              'Upload Image',
+                              style: TextStyle(color: Colors.grey, fontSize: 14),
+                            ),
+                          ],
+                        ),
                       ),
-                      ),
-                       SizedBox(width: 10,),
-                      UploadImageWidget(
-                        child: Center(child: Text('2',style: TextStyle(color: Colors.grey),),),
-                      ),
-                       SizedBox(width: 10,),
-                      UploadImageWidget(
-                         child: Center(child: Text('3',style: TextStyle(color: Colors.grey),),),
-                      ),
-                    ],
+                    ),
                   ),
-                  SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      UploadImageWidget(
-                        child: Center(child: Text('4',style: TextStyle(color: Colors.grey),),),                    
-                      ),
-                       SizedBox(width: 10,),
-                      UploadImageWidget(
-                         child: Center(child: Text('5',style: TextStyle(color: Colors.grey),),),                     
-                      ),
-                       SizedBox(width: 10,),
-                      UploadImageWidget(
-                         child: Center(child: Text('6',style: TextStyle(color: Colors.grey),),),
-                      ),
-                    ],
-                  ),
-                  ],
                 ),
               ),
               SizedBox(height: 20),
@@ -288,7 +337,21 @@ class _DonateScreenState extends State<DonateScreen> {
               SizedBox(height: 40,),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: CustomGreenButton(text: 'Post', onPressed: (){}),
+                child:_isLoading
+              ? const Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: CircularProgressIndicator(
+                    color: Color(0xFF3A6351), // green color
+                    strokeWidth: 3,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomGreenButton(
+                    text: 'Post',
+                    onPressed: _submitForm,
+                  ),
+                ),
               ),
               SizedBox(height: 20,),
             ],
