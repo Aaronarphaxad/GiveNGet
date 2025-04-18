@@ -98,10 +98,10 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            _buildInfoRow("Name: ", "Jonathan Smith"),
-                            _buildInfoRow("Phone Number: ", "+1 800 You're Broke"),
-                            _buildInfoRow("Email: ", "jonathansmith@gmail.com"),
-                            _buildInfoRow("Location: ", "Supercool Address"),
+                            _buildInfoRow("Name: ", name),
+                            _buildInfoRow("Phone Number: ", phone),
+                            _buildInfoRow("Email: ", email),
+                            _buildInfoRow("Location: ", location),
                             _buildRatingRow(),
                             _buildInfoRow("Donations: ", "24 Donations"),
                           ],
@@ -110,7 +110,31 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                     ),
                   ),
                 SizedBox(height: 10),
-                 CustomGreenButton(text: 'Edit', onPressed: (){}),
+                 CustomGreenButton(
+                   text: 'Edit',
+                   onPressed: (){
+                     showModalBottomSheet(
+                       context: context,
+                       isScrollControlled: true,
+                       shape: RoundedRectangleBorder(
+                         borderRadius: BorderRadius.vertical(top:Radius.circular(16)),
+                       ),
+                       builder: (context)=>EditProfileSheet(
+                         name: name,
+                         phone: phone,
+                         email: email,
+                         location: location,
+                         onSave: (updated) {
+                           setState(() {
+                             name = updated['name']!;
+                             phone = updated['phone']!;
+                             email = updated['email']!;
+                             location = updated['location']!;
+                           });
+                         },
+                       ),
+                     );
+                   }),
                 SizedBox(height: 10),
                 ],
               ),
@@ -174,6 +198,98 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class EditProfileSheet extends StatefulWidget {
+  final String name, phone, email, location;
+  final Function(Map<String, String>) onSave;
+
+  const EditProfileSheet({
+    super.key,
+    required this.name,
+    required this.phone,
+    required this.email,
+    required this.location,
+    required this.onSave,
+  });
+
+  @override
+  State<EditProfileSheet> createState() => _EditProfileSheetState();
+}
+
+class _EditProfileSheetState extends State<EditProfileSheet> {
+  late TextEditingController nameController;
+  late TextEditingController phoneController;
+  late TextEditingController emailController;
+  late TextEditingController locationController;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController(text: widget.name);
+    phoneController = TextEditingController(text: widget.phone);
+    emailController = TextEditingController(text: widget.email);
+    locationController = TextEditingController(text: widget.location);
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    locationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text("Edit Profile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(height: 12),
+            _buildField("Name", nameController),
+            _buildField("Phone", phoneController),
+            _buildField("Email", emailController),
+            _buildField("Location", locationController),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () async {
+                final updated = {
+                  'name': nameController.text,
+                  'phone': phoneController.text,
+                  'email': emailController.text,
+                  'location': locationController.text,
+                };
+
+                // TODO: Call PUT /api/givenget/users/{id} here
+                widget.onSave(updated);
+                Navigator.pop(context);
+              },
+              child: Text("Save"),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildField(String label, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(),
+        ),
       ),
     );
   }

@@ -41,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (user != null) {
       setState(() {
-        _firstName = user['firstName'] ?? 'Guest';
+        _firstName = user['name'] ?? 'Guest';
         _lastName = user['lastName'] ?? '';
         _email = user['email'] ?? '';
         _phone = user['phoneNum'] ?? '';
