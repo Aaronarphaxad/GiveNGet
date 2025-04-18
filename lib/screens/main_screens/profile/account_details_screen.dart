@@ -1,8 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 
-class AccountDetailsScreen extends StatelessWidget {
+import '../../../services/auth_service.dart';
+
+class AccountDetailsScreen extends StatefulWidget {
   const AccountDetailsScreen({super.key});
+
+  @override
+  State<AccountDetailsScreen> createState() => _AccountDetailsScreenState();
+}
+
+class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
+  String name = '';
+  String phone = '';
+  String email = '';
+  String location = '';
+  int rating = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserProfile();
+  }
+
+  Future<void> fetchUserProfile() async {
+    final profile = await AuthService().getUserProfile();
+    if (profile != null) {
+      setState(() {
+        name = profile['name'];
+        phone = profile['phoneNum'];
+        email = profile['email'];
+        location = profile['location'];
+        rating = profile['rating'];
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

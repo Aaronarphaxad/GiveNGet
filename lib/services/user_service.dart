@@ -4,15 +4,21 @@ import 'package:givenget/services/auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class UserService {
 
 Future<User?> fetchUserById(String userId) async {
-  final url = Uri.parse('http://192.168.1.87:8080/api/givenget/users/$userId');
+  // CHANGE IP HERE
+  final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/$userId');
 
   try {
     // 🔐 Get the access token (assumes getAccessToken returns a Map)
-    AuthService authService = AuthService();
-    final token = await authService.getAccessToken();
+    // AuthService authService = AuthService();
+    // final token = await authService.getAccessToken();
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
     print('🔐 Access Token: $token');
    
 

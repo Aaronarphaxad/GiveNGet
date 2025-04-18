@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givenget/services/auth_service.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 import 'package:givenget/widgets/components/custom_text_form_field.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
 import '../main_screens/explore/explore_screen.dart';
 
@@ -33,14 +33,20 @@ void _login() async {
   );
 
   try {
-    final success = await AuthService().loginUser(
+    final result = await AuthService().loginUser(
       email: email,
       password: password,
     );
 
     Navigator.pop(context); // Close loading dialog
 
-    if (success) {
+    if (result!=null) {
+
+      final prefs = await SharedPreferences.getInstance();
+
+      prefs.setString('token', result['token']);
+      prefs.setString('userId', result['userId']);
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('✅ Login successful'),
@@ -48,7 +54,12 @@ void _login() async {
           backgroundColor: Colors.green,
         ),
       );
-       Navigator.pushReplacementNamed(context, '/explore');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, '/explore');
+      });
+
+      print('Navigating to /explore');
+
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

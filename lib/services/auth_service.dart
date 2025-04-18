@@ -1,5 +1,6 @@
 import 'package:givenget/services/session_manager.dart';
 import 'package:givenget/services/user_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -7,7 +8,7 @@ class AuthService {
   static const String _clientId = 'givenget';
   static const String _clientSecret = 'SuperSecret';
   // CHANGE THE IP BELOW TO YOUR PC'S IP OR ELSE IT WON'T WORK
-  static const String _tokenEndpoint = 'http://192.168.1.87:9000/oauth2/token';
+  static const String _tokenEndpoint = 'http://192.168.1.126:9000/oauth2/token';
   static const List<String> _scopes = ['givenget:read', 'givenget:write'];
 
   Future<String?> getAccessToken() async {
@@ -67,10 +68,10 @@ class AuthService {
 
     final response = await http.post(
       // CHANGE THE IP BELOW TO YOUR PC'S IP OR ELSE IT WON'T WORK
-      Uri.parse('http://192.168.1.87:8080/api/givenget/auth/signup'), // update path if different
+      Uri.parse('http://192.168.1.126:8080/api/givenget/auth/signup'), // update path if different
       headers: {
         'Content-Type': 'application/json',
-        // 'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer $token',
       },
       body: jsonEncode(signupRequest),
     );
@@ -85,49 +86,91 @@ class AuthService {
     }
   }
 
-Future<bool> loginUser({
-  required String email,
-  required String password,
-}) async {
-  final loginRequest = {
-    'email': email,
-    'password': password,
-  };
+  Future<Map<String, dynamic>?> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    final loginRequest = {
+      'email': email,
+      'password': password,
+    };
 
-  final response = await http.post(
-    Uri.parse('http://192.168.1.87:8080/api/givenget/auth/login'),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: jsonEncode(loginRequest),
-  );
+    final response = await http.post(
+      Uri.parse('http://192.168.1.126:8080/api/givenget/auth/login'),
+      headers: {
+        // 'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(loginRequest),
+    );
 
-  if (response.statusCode == 200) {
-    print(response.body);
-    final data = jsonDecode(response.body);
-    final userId = data['userId']; // Make sure this matches your backend
-    SessionManager().setUserId(userId);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print('✅ Login Response: $data');
 
-    print('✅ Login success. User ID: $userId');
+      final userId = data['userId'];
+      final token = data['accessToken'];
 
-    // 🔄 Fetch the full user object
-    final userService = UserService();
-    final user = await userService.fetchUserById(userId);
+      if (userId == null || token == null) {
+        print('❌ userId or token is null. Response: $data');
+        return null;
+      }
 
-    if (user != null) {
-      print('👤 Logged in user: ${user.name}, ${user.email}');
-      // You can optionally store this user globally
-      SessionManager().setCurrentUser(user); // Make sure this method exists
-    } else {
-      print('⚠️ Could not load user details after login');
+      // ✅ Save token & userId BEFORE doing anything else
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', token);
+      prefs.setString('userId', userId);
+
+      // Save in session if needed
+      SessionManager().setUserId(userId);
+
+      // ✅ Now fetch user (this will succeed now that token is saved)
+      final user = await UserService().fetchUserById(userId);
+      if (user != null) SessionManager().setCurrentUser(user);
+
+      return {
+        'userId': userId,
+        'token': token,
+      };
     }
 
-     print('👤 Logged in as: ${SessionManager().getCurrentUser()?.name}');
-    return true;
-  } else {
-    print('❌ Login failed: ${response.statusCode}');
-    return false;
+    return null;
   }
-}
+
+
+  Future<Map<String, dynamic>?> getUserProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    // final token = await getAccessToken();
+    final token = prefs.getString('token');
+    final userId = prefs.getString('userId');
+
+    print('🔐 token: $token');
+    print('👤 userId: $userId');
+
+    if (token == null || userId == null) return null;
+
+
+    final url = 'http://192.168.1.126:8080/api/givenget/users/$userId';
+    print('🌐 GET $url');
+    // IP ADDRESS
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    print('📡 Response code: ${response.statusCode}');
+    print('📡 Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print('❌ Failed to fetch profile: ${response.statusCode}');
+      return null;
+    }
+  }
+
 
 }
