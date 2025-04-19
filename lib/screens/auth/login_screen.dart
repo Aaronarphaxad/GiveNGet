@@ -33,7 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     try {
+      print('🔄 Calling loginUser with $email');
       final result = await AuthService().loginUser(email: email, password: password);
+      print('🔁 loginUser returned: $result');
 
       Navigator.pop(context); // Close loading dialog
 

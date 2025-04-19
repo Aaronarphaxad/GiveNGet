@@ -46,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _email = user['email'] ?? '';
         _phone = user['phoneNum'] ?? '';
         _userStatus = user['userStatus'] ?? 'guest';
-        _donations = user['donations'] ?? 0;
+        _donations = (user['donatedIDItems'] as List?)?.length ?? 0;
       });
     } else {
       print('❌ Failed to load user data');

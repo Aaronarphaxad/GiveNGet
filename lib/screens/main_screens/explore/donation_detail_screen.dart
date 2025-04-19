@@ -31,7 +31,7 @@ void _toggleLike() async {
     return;
   }
 
-  final alreadyLiked = currentUser!.likedItems.any((item) => item.id == widget.item.id);
+  final alreadyLiked = currentUser!.likedIDItems.any((item) => item.id == widget.item.id);
 
   if (alreadyLiked) {
     showDialog(
@@ -56,7 +56,7 @@ void _toggleLike() async {
                 await Future.delayed(const Duration(milliseconds: 100)); // Wait a bit for dialog to close
 
                 setState(() {
-                  currentUser!.likedItems.removeWhere((item) => item.id == widget.item.id);
+                  currentUser!.likedIDItems.removeWhere((item) => item.id == widget.item.id);
                 });
 
                 final success = await ItemsService().updateUserLikedItems(
@@ -90,7 +90,7 @@ void _toggleLike() async {
     );
   } else {
     setState(() {
-      currentUser!.likedItems.add(widget.item);
+      currentUser!.likedIDItems.add(widget.item);
     });
 
     final success = await ItemsService().updateUserLikedItems(
@@ -130,10 +130,10 @@ void _toggleLike() async {
           IconButton(
             onPressed: _toggleLike,
             icon: Icon(          
-              currentUser!.likedItems.any((item) => item.id == widget.item.id)
+              currentUser!.likedIDItems.any((item) => item.id == widget.item.id)
                   ? Icons.favorite
                   : Icons.favorite_border,
-              color: currentUser!.likedItems.any((item) => item.id == widget.item.id)
+              color: currentUser!.likedIDItems.any((item) => item.id == widget.item.id)
                   ? Colors.red
                   : Colors.grey,
             ),

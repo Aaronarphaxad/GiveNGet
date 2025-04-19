@@ -58,7 +58,7 @@ class _SignupScreenState extends State<SignupScreen> {
         email: _emailController.text.trim(),
         phone: _phoneController.text.trim(),
         password: _passwordController.text,
-        token: token,
+        // token: token,
       );
 
       Navigator.pop(context);

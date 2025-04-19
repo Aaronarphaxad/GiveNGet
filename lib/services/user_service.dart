@@ -8,47 +8,74 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
 
-Future<User?> fetchUserById(String userId) async {
-  // CHANGE IP HERE
-  final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/$userId');
+  Future<User?> fetchUserById(String userId) async {
+    // CHANGE IP HERE
+    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/$userId');
 
-  try {
-    // 🔐 Get the access token (assumes getAccessToken returns a Map)
-    // AuthService authService = AuthService();
-    // final token = await authService.getAccessToken();
+    try {
+      // 🔐 Get the access token (assumes getAccessToken returns a Map)
+      // AuthService authService = AuthService();
+      // final token = await authService.getAccessToken();
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      print('🔐 Access Token: $token');
+
+
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> json = jsonDecode(response.body);
+        final user = User.fromJson(json);
+
+        print('✅ User JSON: ${response.body}');
+        print('👤 Fetched user: ${user.name} - ${user.email} - ${user.id}');
+
+        return user;
+      } else {
+        print('❌ Failed to fetch user: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('🔥 Error fetching user: $e');
+      return null;
+    }
+  }
+
+  Future<bool> updateUserProfile(Map<String, String> updatedFields) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
+    final userId = prefs.getString('userId');
 
-    print('🔐 Access Token: $token');
-   
+    if (token == null || userId == null) {
+      print('❌ Missing token or userId');
+      return false;
+    }
 
-    final response = await http.get(
+    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/$userId');
+
+    final response = await http.put(
       url,
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },
+      body: jsonEncode(updatedFields),
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> json = jsonDecode(response.body);
-      final user = User.fromJson(json);
-
-      print('✅ User JSON: ${response.body}');
-      print('👤 Fetched user: ${user.name} - ${user.email} - ${user.id}');
-
-      return user;
+      print('✅ Profile update successful');
+      return true;
     } else {
-      print('❌ Failed to fetch user: ${response.statusCode}');
-      return null;
+      print('❌ Failed to update profile: ${response.statusCode} - ${response.body}');
+      return false;
     }
-  } catch (e) {
-    print('🔥 Error fetching user: $e');
-    return null;
   }
-}
-
-
-
 
 }

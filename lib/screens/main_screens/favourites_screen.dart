@@ -63,7 +63,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
                 setState(() {
                   favouriteItems.removeWhere((item) => item.id == donationItem.id);
-                  currentUser!.likedItems.removeWhere((item) => item.id == donationItem.id);
+                  currentUser!.likedIDItems.removeWhere((item) => item.id == donationItem.id);
                 });
 
                 final success = await ItemsService().updateUserLikedItems(

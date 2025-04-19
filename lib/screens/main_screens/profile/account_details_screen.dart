@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 
 import '../../../services/auth_service.dart';
+import '../../../services/user_service.dart';
 
 class AccountDetailsScreen extends StatefulWidget {
   const AccountDetailsScreen({super.key});
@@ -16,6 +17,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
   String email = '';
   String location = '';
   int rating = 0;
+  int donations = 0;
 
   @override
   void initState() {
@@ -32,6 +34,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
         email = profile['email'];
         location = profile['location'];
         rating = profile['rating'];
+        donations = (profile['donatedIDItems'] as List?)?.length ?? 0;
       });
     }
   }
@@ -103,7 +106,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                             _buildInfoRow("Email: ", email),
                             _buildInfoRow("Location: ", location),
                             _buildRatingRow(),
-                            _buildInfoRow("Donations: ", "24 Donations"),
+                            _buildInfoRow("Donations: ", donations.toString()),
                           ],
                         ),
                       ),
@@ -270,8 +273,30 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
                 };
 
                 // TODO: Call PUT /api/givenget/users/{id} here
-                widget.onSave(updated);
-                Navigator.pop(context);
+                final success = await UserService().updateUserProfile({
+                  'name': nameController.text,
+                  'email': emailController.text,
+                  'phoneNum': phoneController.text,
+                  'location': locationController.text,
+                });
+
+                if (success) {
+                  widget.onSave({
+                    'name': nameController.text,
+                    'email': emailController.text,
+                    'phone': phoneController.text,
+                    'location': locationController.text,
+                  });
+                  Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('❌ Failed to update profile'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+
               },
               child: Text("Save"),
             )

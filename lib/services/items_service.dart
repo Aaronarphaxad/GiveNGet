@@ -48,10 +48,10 @@ Future<bool> updateUserLikedItems({
   }
 
   // Add the liked item only if it's not already liked
-  final alreadyLiked = currentUser.likedItems.any((item) => item.id == likedItem.id);
+  final alreadyLiked = currentUser.likedIDItems.any((item) => item.id == likedItem.id);
   final updatedLikedItems = alreadyLiked
-      ? currentUser.likedItems
-      : [...currentUser.likedItems, likedItem];
+      ? currentUser.likedIDItems
+      : [...currentUser.likedIDItems, likedItem];
 
   // If using a manual constructor, create an updated user manually:
   final updatedUser = User(
@@ -62,9 +62,9 @@ Future<bool> updateUserLikedItems({
     password: currentUser.password,
     location: currentUser.location,
     rating: currentUser.rating,
-    likedItems: updatedLikedItems,
-    donatedItems: currentUser.donatedItems,
-    receivedItems: currentUser.receivedItems,
+    likedIDItems: updatedLikedItems,
+    donatedIDItems: currentUser.donatedIDItems,
+    receivedIDItems: currentUser.receivedIDItems,
     notifications: currentUser.notifications,
     createdAt: currentUser.createdAt,
   );
@@ -109,7 +109,7 @@ Future<List<DonationItem>> fetchLikedItems(String userId) async {
       final user = User.fromJson(json);
 
       print("✅ Liked items fetched for user ${user.name}");
-      return user.likedItems;
+      return user.likedIDItems;
     } else {
       print("❌ Failed to fetch liked items: ${response.statusCode}");
       return [];
