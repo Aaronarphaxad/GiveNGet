@@ -19,67 +19,69 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-void _login() async {
-  if (!_formKey.currentState!.validate()) return;
+  void _login() async {
+    if (!_formKey.currentState!.validate()) return;
 
-  final email = _emailController.text.trim();
-  final password = _passwordController.text;
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
 
-  // Show loading spinner
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => const Center(child: CircularProgressIndicator(color: Colors.green,)),
-  );
-
-  try {
-    final result = await AuthService().loginUser(
-      email: email,
-      password: password,
+    // Show loading spinner
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator(color: Colors.green)),
     );
 
-    Navigator.pop(context); // Close loading dialog
+    try {
+      final result = await AuthService().loginUser(email: email, password: password);
 
-    if (result!=null) {
+      Navigator.pop(context); // Close loading dialog
 
-      final prefs = await SharedPreferences.getInstance();
+      if (result != null && result['token'] != null) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', result['token']);
+        await prefs.setString('userId', result['userId']);
 
-      prefs.setString('token', result['token']);
-      prefs.setString('userId', result['userId']);
+        // Optionally fetch user profile here if needed
+        final userProfile = await AuthService().getUserProfile();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('✅ Login successful'),
-          duration: Duration(seconds: 2),
-          backgroundColor: Colors.green,
-        ),
-      );
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+        print('🔐 Token: ${result['token']}');
+        print('👤 UserId: ${result['userId']}');
+        print('📡 Profile: $userProfile');
+
+        if (userProfile != null) {
+          print('✅ User profile loaded: ${userProfile['email']}');
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ Login successful'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+
         Navigator.pushReplacementNamed(context, '/explore');
-      });
-
-      print('Navigating to /explore');
-
-    } else {
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('❌ Invalid email or password'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      Navigator.pop(context); // Close loading dialog
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('❌ Invalid email or password'),
-          duration: Duration(seconds: 2),
+        SnackBar(
+          content: Text('❌ Error: $e'),
           backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
         ),
       );
     }
-  } catch (e) {
-    Navigator.pop(context); // Close loading dialog
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('❌ Error: $e'),
-        duration: const Duration(seconds: 2),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
-}
     
 
   @override
