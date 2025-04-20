@@ -16,11 +16,13 @@ class FavoritesScreen extends StatefulWidget {
 class _FavoritesScreenState extends State<FavoritesScreen> {
   List<DonationItem> favouriteItems = [];
   bool isLoading = true;
-  final currentUser = SessionManager().getCurrentUser();
+  // final currentUser = SessionManager().getCurrentUser();
+  User? currentUser;
 
   @override
   void initState() {
     super.initState();
+    currentUser = SessionManager().getCurrentUser();
     _loadFavourites();
   }
 
@@ -63,7 +65,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
                 setState(() {
                   favouriteItems.removeWhere((item) => item.id == donationItem.id);
-                  currentUser!.likedItems.removeWhere((item) => item.id == donationItem.id);
+                  currentUser!.likedIDItems.removeWhere((item) => item.id == donationItem.id);
                 });
 
                 final success = await ItemsService().updateUserLikedItems(
