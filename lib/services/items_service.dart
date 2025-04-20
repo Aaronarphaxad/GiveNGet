@@ -43,7 +43,9 @@ class ItemsService {
     final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/$userId');
 
     // Get the access token
-    final accessToken = await AuthService().getAccessToken();
+    // final accessToken = await AuthService().getAccessToken();
+    final prefs = await SharedPreferences.getInstance();
+    final accessToken = prefs.getString('token');
     if (accessToken == null) {
       print("❌ Failed to retrieve access token");
       return false;
@@ -93,7 +95,9 @@ class ItemsService {
     final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/$userId');
 
     try {
-      final accessToken = await AuthService().getAccessToken();
+      // final accessToken = await AuthService().getAccessToken();
+      final prefs = await SharedPreferences.getInstance();
+      final accessToken = prefs.getString('token');
       if (accessToken == null) {
         print("❌ Failed to retrieve access token");
         return [];

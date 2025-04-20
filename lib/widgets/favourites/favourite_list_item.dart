@@ -31,7 +31,7 @@ class _FavouriteDonationGridListItemState extends State<FavouriteDonationGridLis
   }
 
   Future<void> fetchDonorName() async {
-    final user = await UserService().fetchUserById(widget.favouriteItems[widget.index].donor);
+    final user = await UserService().fetchUserById(donorName);
     setState(() {
       donorName = user?.name ?? 'Unknown';
     });

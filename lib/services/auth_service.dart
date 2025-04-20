@@ -139,10 +139,10 @@ class AuthService {
 
 
         // 👤 Fetch full user and store in SessionManager
-        final user = await UserService().fetchUserById(userId);
-        if (user != null) {
-          SessionManager().setCurrentUser(user); // ✅ This is the fix
-        }
+        // final user = await UserService().fetchUserById(userId);
+        // if (user != null) {
+        //   SessionManager().setCurrentUser(user); // ✅ This is the fix
+        // }
         return {
           'token': data['accessToken'],
           'userId': data['userId'],

@@ -17,7 +17,7 @@ class UserService {
       // AuthService authService = AuthService();
       // final token = await authService.getAccessToken();
       final prefs = await SharedPreferences.getInstance();
-      final userProfile = await AuthService().getUserProfile();
+      // final userProfile = await AuthService().getUserProfile();
       final token = prefs.getString('token');
 
       print('🔐 Access Token: $token');
@@ -31,9 +31,10 @@ class UserService {
         },
       );
 
+      final Map<String, dynamic> json = jsonDecode(response.body);
+      final user = User.fromJson(json);
+
       if (response.statusCode == 200) {
-        final Map<String, dynamic> json = jsonDecode(response.body);
-        final user = User.fromJson(json);
 
         print('✅ User JSON: ${response.body}');
         print('👤 Fetched user: ${user.name} - ${user.email} - ${user.id}');

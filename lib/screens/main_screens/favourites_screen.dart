@@ -16,19 +16,29 @@ class FavoritesScreen extends StatefulWidget {
 class _FavoritesScreenState extends State<FavoritesScreen> {
   List<DonationItem> favouriteItems = [];
   bool isLoading = true;
-  final currentUser = SessionManager().getCurrentUser();
+  User? currentUser;
 
   @override
   void initState() {
     super.initState();
+    currentUser = SessionManager().getCurrentUser();
     _loadFavourites();
   }
 
   Future<void> _loadFavourites() async {
+    await SessionManager().initializeFromPrefs();
+
+    setState(() {
+      currentUser = SessionManager().getCurrentUser(); // ✅ Get user after prefs init
+    });
+
     if (currentUser == null) {
-      print("❌ No user logged in.");
+      print("❌ No user logged in after init.");
+      setState(() => isLoading = false);
       return;
     }
+
+    print("👤 Logged in as: ${currentUser!.name} - ${currentUser!.email}");
 
     final items = await ItemsService().fetchLikedItems(currentUser!.id);
     setState(() {
@@ -63,8 +73,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
                 setState(() {
                   favouriteItems.removeWhere((item) => item.id == donationItem.id);
-                  currentUser!.likedItems.removeWhere((item) => item.id == donationItem.id);
+                  currentUser!.likedIDItems.removeWhere((item) => item.id == donationItem.id);
                 });
+
+                print("🧠 Updating likes for: ${currentUser?.name} - ${currentUser?.email} - ${currentUser?.id}");
+                print("🧠 The liked item was donated by: ${donationItem.donor}");
 
                 final success = await ItemsService().updateUserLikedItems(
                   userId: currentUser!.id,
