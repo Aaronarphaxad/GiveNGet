@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:givenget/models/donation_item.dart';
 import 'package:givenget/screens/main_screens/explore/donation_detail_screen.dart';
 import 'package:givenget/services/user_service.dart';
-import 'package:givenget/models/user.dart';
 
 class FavouriteDonationGridListItem extends StatefulWidget {
   final List<DonationItem> favouriteItems;
   final int index;
-  final Function(BuildContext, DonationItem) removeFromFavourites;
-  final VoidCallback refreshFavourites;
+  final Future<void> Function(BuildContext, DonationItem) removeFromFavourites;
+  final VoidCallback? refreshFavourites;
 
   const FavouriteDonationGridListItem({
     super.key,
     required this.favouriteItems,
     required this.index,
     required this.removeFromFavourites,
-    required this.refreshFavourites,
+    this.refreshFavourites,
   });
 
   @override
@@ -111,8 +110,9 @@ class _FavouriteDonationGridListItemState extends State<FavouriteDonationGridLis
                       color: const Color.fromARGB(104, 0, 0, 0),
                     ),
                     child: IconButton(
-                      onPressed: () {
-                        widget.removeFromFavourites(context, item);
+                      onPressed: () async {
+                        await widget.removeFromFavourites(context, item);
+                        widget.refreshFavourites?.call();
                       },
                       icon: const Icon(Icons.clear, color: Colors.white, size: 14),
                     ),

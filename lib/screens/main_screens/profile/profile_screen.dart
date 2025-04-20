@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/widgets/profile/custom_red_button.dart';
 import 'package:givenget/widgets/profile/profile_item.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
+import '../../../services/auth_service.dart';
 import '../../auth/auth_service.dart';
+import '../my_donations_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -12,12 +15,45 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String _userStatus = 'guest';
-  String _firstName = 'Jonathan';
-  String _lastName = 'Smith';
-  String _email = 'jonathansmith@gmail.com';
-  String _phone = '+1 800-need-free-stuff';
-  int _donations = 24;
+  // String _userStatus = 'guest';
+  // String _firstName = 'Jonathan';
+  // String _lastName = 'Smith';
+  // String _email = 'jonathansmith@gmail.com';
+  // String _phone = '+1 800-need-free-stuff';
+  // int _donations = 24;
+
+  String _userStatus = '';
+  String _firstName = '';
+  String _lastName = '';
+  String _email = '';
+  String _phone = '';
+  int _donations = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+
+  Future<void> _loadUserData() async {
+    final authService = AuthService();
+    final user = await authService.getUserProfile();
+
+    if (user != null) {
+      setState(() {
+        _firstName = user['name'] ?? 'Guest';
+        _lastName = user['lastName'] ?? '';
+        _email = user['email'] ?? '';
+        _phone = user['phoneNum'] ?? '';
+        _userStatus = user['userStatus'] ?? 'guest';
+        _donations = (user['donatedIDItems'] as List?)?.length ?? 0;
+      });
+    } else {
+      print('❌ Failed to load user data');
+    }
+  }
+
 
 /* - taking this out for now, using static data
   @override
@@ -136,7 +172,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
           ),
           const SizedBox(height: 3),
-          ProfileItem(itemListIcon: Icons.favorite, itemListName: 'My Donations',onPressed: (){},),
+          ProfileItem(itemListIcon: Icons.favorite, itemListName: 'My Donations',onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MyDonationsScreen()),
+            );},),
           const SizedBox(height: 3),
           ProfileItem(itemListIcon: Icons.language, itemListName: 'Change Language',onPressed: (){},),
           const SizedBox(height: 3),
@@ -146,10 +186,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: CustomRedButton(
-              onPressed: () async {
+              // onPressed: () async {
                // final prefs = await SharedPreferences.getInstance();
               //  await prefs.remove('currentUserEmail');
-               Navigator.pushReplacementNamed(context, '/login');
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.clear();
+                  Navigator.pushReplacementNamed(context, '/login');
               },
               text: 'Logout',
                         ),

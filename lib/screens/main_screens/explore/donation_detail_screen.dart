@@ -8,6 +8,8 @@ import 'package:givenget/widgets/explore/details.dart';
 import 'package:givenget/widgets/explore/details_interested_nav.dart';
 import 'package:givenget/widgets/explore/interested.dart';
 
+import '../../../models/user.dart';
+
 class DonationDetailScreen extends StatefulWidget {
   final DonationItem item;
   final VoidCallback? refreshFavorites; 
@@ -21,8 +23,15 @@ class DonationDetailScreen extends StatefulWidget {
 class _DonationDetailScreenState extends State<DonationDetailScreen> {
   bool isLiked = false; // Track if the donation item is liked
   int selected = 1; // 1 for details, 2 for interested
-   final currentUser = SessionManager().getCurrentUser();
+ // final currentUser = SessionManager().getCurrentUser();
 
+  User? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = SessionManager().getCurrentUser();
+  }
   
 
 void _toggleLike() async {
@@ -31,7 +40,7 @@ void _toggleLike() async {
     return;
   }
 
-  final alreadyLiked = currentUser!.likedItems.any((item) => item.id == widget.item.id);
+  final alreadyLiked = currentUser?.likedIDItems.any((item) => item.id == widget.item.id)??false;
 
   if (alreadyLiked) {
     showDialog(
@@ -56,7 +65,7 @@ void _toggleLike() async {
                 await Future.delayed(const Duration(milliseconds: 100)); // Wait a bit for dialog to close
 
                 setState(() {
-                  currentUser!.likedItems.removeWhere((item) => item.id == widget.item.id);
+                  currentUser!.likedIDItems.removeWhere((item) => item.id == widget.item.id);
                 });
 
                 final success = await ItemsService().updateUserLikedItems(
@@ -90,7 +99,7 @@ void _toggleLike() async {
     );
   } else {
     setState(() {
-      currentUser!.likedItems.add(widget.item);
+      currentUser!.likedIDItems.add(widget.item);
     });
 
     final success = await ItemsService().updateUserLikedItems(
@@ -130,10 +139,10 @@ void _toggleLike() async {
           IconButton(
             onPressed: _toggleLike,
             icon: Icon(          
-              currentUser!.likedItems.any((item) => item.id == widget.item.id)
+              currentUser?.likedIDItems.any((item) => item.id == widget.item.id) ?? false
                   ? Icons.favorite
                   : Icons.favorite_border,
-              color: currentUser!.likedItems.any((item) => item.id == widget.item.id)
+              color: currentUser?.likedIDItems.any((item) => item.id == widget.item.id)??false
                   ? Colors.red
                   : Colors.grey,
             ),

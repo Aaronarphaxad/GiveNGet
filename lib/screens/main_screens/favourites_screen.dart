@@ -41,7 +41,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     _loadFavourites();
   }
 
-  void removeFromFavourites(BuildContext context, DonationItem donationItem) {
+  Future<void> removeFromFavourites(BuildContext context, DonationItem donationItem) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {

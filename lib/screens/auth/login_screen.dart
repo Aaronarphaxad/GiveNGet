@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:givenget/services/auth_service.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 import 'package:givenget/widgets/components/custom_text_form_field.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../models/user.dart';
+import '../../services/session_manager.dart';
 import 'auth_service.dart';
 import '../main_screens/explore/explore_screen.dart';
 
@@ -19,56 +21,80 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-void _login() async {
-  if (!_formKey.currentState!.validate()) return;
+  void _login() async {
+    if (!_formKey.currentState!.validate()) return;
 
-  final email = _emailController.text.trim();
-  final password = _passwordController.text;
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
 
-  // Show loading spinner
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => const Center(child: CircularProgressIndicator(color: Colors.green,)),
-  );
-
-  try {
-    final success = await AuthService().loginUser(
-      email: email,
-      password: password,
+    // Show loading spinner
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator(color: Colors.green)),
     );
 
-    Navigator.pop(context); // Close loading dialog
+    try {
+      print('🔄 Calling loginUser with $email');
+      final result = await AuthService().loginUser(email: email, password: password);
+      print('🔁 loginUser returned: $result');
 
-    if (success) {
+      Navigator.pop(context); // Close loading dialog
+
+      if (result != null && result['token'] != null) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', result['token']);
+        await prefs.setString('userId', result['userId']);
+
+        // await SessionManager().setToken(result['token']);
+        // await SessionManager().setUserId(result['userId']);
+
+        // Optionally fetch user profile here if needed
+        final userProfile = await AuthService().getUserProfile();
+
+
+        print('🔐 Token: ${result['token']}');
+        print('👤 UserId: ${result['userId']}');
+        print('📡 Profile: $userProfile');
+
+        if (userProfile != null) {
+          print('✅ User profile loaded: ${userProfile['email']}');
+
+          await SessionManager().initializeFromPrefs();
+
+          // final user = User.fromJson(userProfile); // make sure you have this model
+          // SessionManager().setCurrentUser(user);   // 🔑 This makes the user available globally
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ Login successful'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+
+        Navigator.pushReplacementNamed(context, '/explore');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('❌ Invalid email or password'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      Navigator.pop(context); // Close loading dialog
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('✅ Login successful'),
-          duration: Duration(seconds: 2),
-          backgroundColor: Colors.green,
-        ),
-      );
-       Navigator.pushReplacementNamed(context, '/explore');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('❌ Invalid email or password'),
-          duration: Duration(seconds: 2),
+        SnackBar(
+          content: Text('❌ Error: $e'),
           backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
         ),
       );
     }
-  } catch (e) {
-    Navigator.pop(context); // Close loading dialog
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('❌ Error: $e'),
-        duration: const Duration(seconds: 2),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
-}
     
 
   @override
