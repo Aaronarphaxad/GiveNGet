@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import '../../../services/auth_service.dart';
 import '../../auth/auth_service.dart';
+import '../my_donations_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -171,7 +172,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
           ),
           const SizedBox(height: 3),
-          ProfileItem(itemListIcon: Icons.favorite, itemListName: 'My Donations',onPressed: (){},),
+          ProfileItem(itemListIcon: Icons.favorite, itemListName: 'My Donations',onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MyDonationsScreen()),
+            );},),
           const SizedBox(height: 3),
           ProfileItem(itemListIcon: Icons.language, itemListName: 'Change Language',onPressed: (){},),
           const SizedBox(height: 3),
