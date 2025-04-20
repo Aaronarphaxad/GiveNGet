@@ -287,7 +287,13 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
                     'phone': phoneController.text,
                     'location': locationController.text,
                   });
-                  Navigator.pop(context);
+                  Navigator.pop(context);  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('✅ Profile updated successfully!'),
+                      backgroundColor: Colors.green,
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(

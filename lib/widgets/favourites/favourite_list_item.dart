@@ -5,10 +5,10 @@ import 'package:givenget/screens/main_screens/explore/donation_detail_screen.dar
 class FavouriteDonationGridListItem extends StatelessWidget {
   List<DonationItem> favouriteItems;
   int index;
-  final Function(BuildContext, DonationItem) removeFromFavourites;
-  final VoidCallback refreshFavourites;
+  final Future<void> Function(BuildContext, DonationItem) removeFromFavourites;
+  final VoidCallback? refreshFavourites;
 
-  FavouriteDonationGridListItem({super.key, required this.favouriteItems, required this.index, required this.removeFromFavourites, required this.refreshFavourites});
+  FavouriteDonationGridListItem({super.key, required this.favouriteItems, required this.index, required this.removeFromFavourites,  this.refreshFavourites});
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +82,9 @@ class FavouriteDonationGridListItem extends StatelessWidget {
                       ),           
                       width: 30,
                       height: 30,
-                      child: IconButton(onPressed: () {                      
-                        removeFromFavourites(context, favouriteItems[index]);
+                      child: IconButton(onPressed: () async {
+                        await removeFromFavourites(context, favouriteItems[index]);
+                        refreshFavourites!();
                       }, icon: Icon(Icons.clear, color: Colors.white, size: 14,),),
                     ),
                   ),

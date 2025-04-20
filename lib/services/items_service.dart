@@ -4,6 +4,8 @@ import 'package:givenget/services/auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class ItemsService {
 
 
@@ -122,7 +124,23 @@ class ItemsService {
 
   Future<List<DonationItem>> fetchUserDonations(String donorId) async {
     final url = Uri.parse('http://192.168.1.126:8080/api/givenget/items/donor/$donorId');
-    final response = await http.get(url);
+
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    print('📡 Fetching donations for: $donorId');
+    print('🔐 Token: $token');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    print('📡 Status Code: ${response.statusCode}');
+    print('📡 Body: ${response.body}');
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = jsonDecode(response.body);
@@ -132,13 +150,27 @@ class ItemsService {
     }
   }
 
+
   Future<bool> deleteDonationItem(String itemId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) {
+      print("❌ No token found.");
+      return false;
+    }
+
     final url = Uri.parse('http://192.168.1.126:8080/api/givenget/items/$itemId');
-    final response = await http.delete(url);
+    final response = await http.delete(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
 
-    return response.statusCode == 200;
+    print('🗑️ DELETE response: ${response.statusCode}');
+
+    return response.statusCode == 204;
   }
-
-
 
 }

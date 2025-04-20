@@ -3,6 +3,8 @@ import 'package:givenget/services/auth_service.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 import 'package:givenget/widgets/components/custom_text_form_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../models/user.dart';
+import '../../services/session_manager.dart';
 import 'auth_service.dart';
 import '../main_screens/explore/explore_screen.dart';
 
@@ -44,8 +46,12 @@ class _LoginScreenState extends State<LoginScreen> {
         await prefs.setString('token', result['token']);
         await prefs.setString('userId', result['userId']);
 
+        // await SessionManager().setToken(result['token']);
+        // await SessionManager().setUserId(result['userId']);
+
         // Optionally fetch user profile here if needed
         final userProfile = await AuthService().getUserProfile();
+
 
         print('🔐 Token: ${result['token']}');
         print('👤 UserId: ${result['userId']}');
@@ -53,6 +59,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (userProfile != null) {
           print('✅ User profile loaded: ${userProfile['email']}');
+
+          await SessionManager().initializeFromPrefs();
+
+          // final user = User.fromJson(userProfile); // make sure you have this model
+          // SessionManager().setCurrentUser(user);   // 🔑 This makes the user available globally
         }
 
         ScaffoldMessenger.of(context).showSnackBar(

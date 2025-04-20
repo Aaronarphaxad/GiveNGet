@@ -3,6 +3,7 @@ import 'package:givenget/models/donation_item.dart';
 import 'package:givenget/services/items_service.dart';
 import 'package:givenget/services/session_manager.dart';
 import 'package:givenget/widgets/favourites/favourite_list_item.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyDonationsScreen extends StatefulWidget {
   const MyDonationsScreen({super.key});
@@ -14,7 +15,12 @@ class MyDonationsScreen extends StatefulWidget {
 class _MyDonationsScreenState extends State<MyDonationsScreen> {
   List<DonationItem> myDonations = [];
   bool isLoading = true;
-  final currentUser = SessionManager().getCurrentUser();
+  // final currentUser = SessionManager().getCurrentUser();
+
+  // final prefs = await SharedPreferences.getInstance();
+  // // final token = await getAccessToken();
+  // final token = prefs.getString('token');
+  // final userId = prefs.getString('userId');
 
   @override
   void initState() {
@@ -22,24 +28,69 @@ class _MyDonationsScreenState extends State<MyDonationsScreen> {
     _loadMyDonations();
   }
 
+  // Future<void> _loadMyDonations() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final donorId = prefs.getString('userId');
+  //   final token = prefs.getString('token');
+  //
+  //   if (donorId == null || token == null) {
+  //     print("❌ No userId or token found in SharedPreferences.");
+  //     return;
+  //   }
+  //
+  //   try {
+  //     print("📡 Fetching donations for: $donorId");
+  //     final items = await ItemsService().fetchUserDonations(donorId);
+  //     print("📦 Donations fetched: ${items.length}");
+  //
+  //     setState(() {
+  //       myDonations = items;
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     print("❌ Error loading donations: $e");
+  //   }
+  // }
+
   Future<void> _loadMyDonations() async {
-    if (currentUser == null) {
-      print("❌ No user logged in.");
+    // if (isLoading) return; // Prevent multiple calls
+
+    setState(() => isLoading = true);
+
+    final prefs = await SharedPreferences.getInstance();
+    final donorId = prefs.getString('userId');
+    final token = prefs.getString('token');
+
+    if (donorId == null || token == null) {
+      print("❌ No userId or token found in SharedPreferences.");
+      setState(() => isLoading = false);
       return;
     }
 
-    final items = await ItemsService().fetchUserDonations(currentUser!.id);
-    setState(() {
-      myDonations = items;
-      isLoading = false;
-    });
+    try {
+      print("📡 Fetching donations for: $donorId");
+      final items = await ItemsService().fetchUserDonations(donorId);
+      print("📦 Donations fetched: ${items.length}");
+
+      setState(() {
+        myDonations = items;
+      });
+    } catch (e) {
+      print("❌ Error loading donations: $e");
+    } finally {
+      setState(() => isLoading = false);
+    }
   }
+
 
   void _refreshDonations() {
-    _loadMyDonations();
+    if (!isLoading) {
+      setState(() => isLoading = true);
+      _loadMyDonations();
+    }
   }
 
-  void removeDonation(BuildContext context, DonationItem donationItem) {
+  Future<void> removeDonation(BuildContext context, DonationItem donationItem) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -65,6 +116,15 @@ class _MyDonationsScreenState extends State<MyDonationsScreen> {
                   setState(() {
                     myDonations.removeWhere((item) => item.id == donationItem.id);
                   });
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('✅ Donation deleted successfully'),
+                      backgroundColor: Colors.green,
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+
                 } else {
                   print("❌ Failed to delete donation.");
                 }

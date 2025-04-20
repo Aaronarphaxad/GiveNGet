@@ -129,6 +129,20 @@ class AuthService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        final token = data['accessToken'];
+        final userId = data['userId'];
+
+        // 🧠 Store in SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+        await prefs.setString('userId', userId);
+
+
+        // 👤 Fetch full user and store in SessionManager
+        final user = await UserService().fetchUserById(userId);
+        if (user != null) {
+          SessionManager().setCurrentUser(user); // ✅ This is the fix
+        }
         return {
           'token': data['accessToken'],
           'userId': data['userId'],
@@ -149,6 +163,9 @@ class AuthService {
     // final token = await getAccessToken();
     final token = prefs.getString('token');
     final userId = prefs.getString('userId');
+
+    // final token = await SessionManager().getUserId();
+    // final userId = await SessionManager().getUserId();
 
     print('🔐 token: $token');
     print('👤 userId: $userId');

@@ -17,6 +17,7 @@ class UserService {
       // AuthService authService = AuthService();
       // final token = await authService.getAccessToken();
       final prefs = await SharedPreferences.getInstance();
+      final userProfile = await AuthService().getUserProfile();
       final token = prefs.getString('token');
 
       print('🔐 Access Token: $token');
@@ -50,6 +51,7 @@ class UserService {
 
   Future<bool> updateUserProfile(Map<String, String> updatedFields) async {
     final prefs = await SharedPreferences.getInstance();
+    final userProfile = await AuthService().getUserProfile();
     final token = prefs.getString('token');
     final userId = prefs.getString('userId');
 
