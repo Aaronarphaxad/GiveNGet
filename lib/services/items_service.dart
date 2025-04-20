@@ -8,7 +8,7 @@ class ItemsService {
 
 
 Future<List<DonationItem>> fetchDonationItems() async {
-  final url = Uri.parse('http://192.168.1.87:8080/api/givenget/items');
+  final url = Uri.parse('http://192.168.1.126:8080/api/givenget/items');
 
   try {
     final response = await http.get(url);
@@ -38,7 +38,7 @@ Future<bool> updateUserLikedItems({
   required User currentUser,
   required DonationItem likedItem,
 }) async {
-  final url = Uri.parse('http://192.168.1.87:8080/api/givenget/users/$userId');
+  final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/$userId');
 
   // Get the access token
   final accessToken = await AuthService().getAccessToken();
@@ -88,7 +88,7 @@ Future<bool> updateUserLikedItems({
 }
 
 Future<List<DonationItem>> fetchLikedItems(String userId) async {
-  final url = Uri.parse('http://192.168.1.87:8080/api/givenget/users/$userId');
+  final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/$userId');
 
   try {
     final accessToken = await AuthService().getAccessToken();
