@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/models/user.dart';
-import 'package:givenget/services/user_service.dart';
 import 'package:givenget/screens/main_screens/explore/donation_detail_screen.dart';
+import 'package:givenget/services/user_service.dart';
 
 class Details extends StatefulWidget {
   final DonationDetailScreen widget;
@@ -41,12 +41,13 @@ class _DetailsState extends State<Details> {
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
-
-        const Text("Description", style: TextStyle(fontSize: 14, color: Colors.grey)),
-        Text(widget.widget.item.description, style: const TextStyle(fontSize: 16)),
+        const Text("Description",
+            style: TextStyle(fontSize: 14, color: Colors.grey)),
+        Text(widget.widget.item.description,
+            style: const TextStyle(fontSize: 16)),
         const SizedBox(height: 12),
-
-        const Text("Availability", style: TextStyle(fontSize: 14, color: Colors.grey)),
+        const Text("Availability",
+            style: TextStyle(fontSize: 14, color: Colors.grey)),
         Text(
           widget.widget.item.availability ? "Available" : "Unavailable",
           style: TextStyle(
@@ -56,8 +57,8 @@ class _DetailsState extends State<Details> {
           ),
         ),
         const SizedBox(height: 10),
-
-        const Text("Category", style: TextStyle(fontSize: 14, color: Colors.grey)),
+        const Text("Category",
+            style: TextStyle(fontSize: 14, color: Colors.grey)),
         const SizedBox(height: 4),
         Row(
           children: [
@@ -78,9 +79,9 @@ class _DetailsState extends State<Details> {
             ),
           ],
         ),
-
         const SizedBox(height: 14),
-        const Text("Condition", style: TextStyle(fontSize: 14, color: Colors.grey)),
+        const Text("Condition",
+            style: TextStyle(fontSize: 14, color: Colors.grey)),
         const SizedBox(height: 4),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
@@ -97,27 +98,26 @@ class _DetailsState extends State<Details> {
             ),
           ),
         ),
-
         const SizedBox(height: 10),
         const Divider(),
         const SizedBox(height: 10),
-
         Row(
           children: [
             const Icon(Icons.location_on, color: Color(0xFF3A6351)),
             const SizedBox(width: 6),
-            Text(widget.widget.item.location, style: const TextStyle(fontSize: 16)),
+            Text(widget.widget.item.location,
+                style: const TextStyle(fontSize: 16)),
           ],
         ),
-
         const SizedBox(height: 6),
         const Text("Email", style: TextStyle(fontSize: 14, color: Colors.grey)),
-        Text(_donor?.email ?? "Email not available", style: const TextStyle(fontSize: 16)),
-
+        Text(_donor?.email ?? "Email not available",
+            style: const TextStyle(fontSize: 16)),
         const SizedBox(height: 6),
-        const Text("Phone Number", style: TextStyle(fontSize: 14, color: Colors.grey)),
-        Text(_donor?.phoneNum ?? "Phone not available", style: const TextStyle(fontSize: 16)),
-
+        const Text("Phone Number",
+            style: TextStyle(fontSize: 14, color: Colors.grey)),
+        Text(_donor?.phoneNum ?? "Phone not available",
+            style: const TextStyle(fontSize: 16)),
         const SizedBox(height: 30),
       ],
     );

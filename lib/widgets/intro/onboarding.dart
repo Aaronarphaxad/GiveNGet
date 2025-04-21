@@ -69,26 +69,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 isLastPage
                     ? Center(
                         child: CustomGreenButton(
-                          text: 'Get Started', 
-                          onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/signup');
-                        })
-                      )
+                            text: 'Get Started',
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, '/signup');
+                            }))
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           currentPage > 0
                               ? TextButton(
                                   onPressed: () => _controller.previousPage(
-                                    duration:
-                                        const Duration(milliseconds: 300),
+                                    duration: const Duration(milliseconds: 300),
                                     curve: Curves.easeInOut,
                                   ),
                                   child: const Text(
                                     "Back",
                                     style: TextStyle(
-                                        color: Color(0xFF3A6351),
-                                        fontSize: 18),
+                                        color: Color(0xFF3A6351), fontSize: 18),
                                   ),
                                 )
                               : TextButton(
@@ -121,45 +119,48 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 }
 
-  Widget buildPage(String imagePath, String mainText, String subText) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body:  Padding(
-        padding: const EdgeInsets.only(left: 10.0, right: 10.0,bottom: 10.0,top: 24.0),
-        child: Column(
-          children: [
-            Image.asset(
+Widget buildPage(String imagePath, String mainText, String subText) {
+  return Scaffold(
+    backgroundColor: Colors.white,
+    body: Padding(
+      padding: const EdgeInsets.only(
+          left: 10.0, right: 10.0, bottom: 10.0, top: 24.0),
+      child: Column(
+        children: [
+          Image.asset(
             'assets/images/givenget-logo.png',
             width: 120,
-            height: 120,         
-            ),
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [   
-                SizedBox(height: 40),          
+            height: 120,
+          ),
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 40),
                 Text(
                   mainText,
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
-                 SizedBox(height: 40),
-                 Image.asset(imagePath, height: 200),
-                 SizedBox(height: 80),
-                 SizedBox(
+                SizedBox(height: 40),
+                Image.asset(imagePath, height: 200),
+                SizedBox(height: 80),
+                SizedBox(
                   width: 300,
-                   child: Text(
+                  child: Text(
                     subText,
-                    style: const TextStyle(fontSize: 18, color: Color.fromARGB(255, 90, 89, 89)),
+                    style: const TextStyle(
+                        fontSize: 18, color: Color.fromARGB(255, 90, 89, 89)),
                     textAlign: TextAlign.center,
-                    ),
-                 ),
-                ],
-              ),
-            )         
-          ],
-        ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
-    );
-  }
+    ),
+  );
+}

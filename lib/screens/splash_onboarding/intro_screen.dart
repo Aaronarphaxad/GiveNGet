@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:givenget/widgets/intro/onboarding.dart';
 import 'package:givenget/widgets/intro/spash_screen.dart';
-import 'dart:async';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -28,7 +29,3 @@ class _IntroScreenState extends State<IntroScreen> {
     return showOnboarding ? const OnboardingScreen() : const SplashScreen();
   }
 }
-
-
-
-

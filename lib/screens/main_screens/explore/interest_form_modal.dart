@@ -3,7 +3,7 @@ import 'package:givenget/models/donation_item.dart';
 
 class InterestFormModal extends StatefulWidget {
   final DonationItem item;
-  final Function(String message) onSubmit; // ✅ Added callback
+  final Function(String message) onSubmit;
 
   const InterestFormModal({
     super.key,
@@ -20,26 +20,26 @@ class _InterestFormModalState extends State<InterestFormModal> {
 
   @override
   void dispose() {
-    _messageController.dispose(); // ✅ Clean up controller
+    _messageController.dispose();
     super.dispose();
   }
 
- void _handleSubmit() {
-  final message = _messageController.text.trim();
+  void _handleSubmit() {
+    final message = _messageController.text.trim();
 
-  if (message.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Message cannot be empty."),
-        backgroundColor: Colors.redAccent,
-      ),
-    );
-    return;
+    if (message.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Message cannot be empty."),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+      return;
+    }
+
+    widget.onSubmit(message);
+    Navigator.pop(context);
   }
-
-  widget.onSubmit(message); // ✅ Trigger the callback
-  Navigator.pop(context);   // ✅ Close the modal
-}
 
   @override
   Widget build(BuildContext context) {
@@ -75,14 +75,16 @@ class _InterestFormModalState extends State<InterestFormModal> {
               controller: _messageController,
               maxLines: 8,
               decoration: InputDecoration(
-                hintText: "Please write a short message to the donor of why you would like to have the item...",
+                hintText:
+                    "Please write a short message to the donor of why you would like to have the item...",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: Colors.grey),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: Color(0xFF3A6351), width: 2),
+                  borderSide:
+                      const BorderSide(color: Color(0xFF3A6351), width: 2),
                 ),
               ),
             ),

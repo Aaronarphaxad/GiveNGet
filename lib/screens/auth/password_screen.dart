@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 import 'package:givenget/widgets/components/custom_text_form_field.dart';
-import '../auth/auth_service.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
@@ -28,19 +27,6 @@ class ForgotPasswordScreen extends StatelessWidget {
         return;
       }
 
-/*
-      // Check if the email exists
-      final user = await AuthService.getUserByEmail(email);
-      if (user == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Email not found'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-        return;
-      }
-*/
       // Simulate sending password reset instructions
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -89,7 +75,6 @@ class ForgotPasswordScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
-
                   CustomTextFormField(
                     formFieldController: _emailController,
                     formFieldIcon: const Icon(Icons.email),
@@ -100,12 +85,11 @@ class ForgotPasswordScreen extends StatelessWidget {
                   SizedBox(
                     width: 250,
                     child: const Text(
-                    'Please enter your email to update your password',
-                    style: TextStyle(color: Colors.grey),
-                    textAlign: TextAlign.center,
+                      'Please enter your email to update your password',
+                      style: TextStyle(color: Colors.grey),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                  ),
-                  
                 ],
               ),
             ),
@@ -118,16 +102,17 @@ class ForgotPasswordScreen extends StatelessWidget {
                 child: CustomGreenButton(
                   text: 'Reset Password',
                   onPressed: () {
-                      // Simulate sending password reset instructions
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Password reset instructions sent to your email'),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
+                    // Simulate sending password reset instructions
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            'Password reset instructions sent to your email'),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
 
-                      // Navigate back to the LoginScreen
-                      Navigator.pop(context);
+                    // Navigate back to the LoginScreen
+                    Navigator.pop(context);
                   },
                 ),
               ),

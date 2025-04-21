@@ -55,8 +55,14 @@ class NotificationCard extends StatelessWidget {
               radius: 30,
               backgroundImage: AssetImage('assets/images/profile-image.png'),
             ),
-            SizedBox(width: 10,),
-            Expanded(child: Text('Andrew has shown interest in your sweaters',style: TextStyle(color: Colors.white),))
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+                child: Text(
+              'Andrew has shown interest in your sweaters',
+              style: TextStyle(color: Colors.white),
+            ))
           ],
         ),
       ),

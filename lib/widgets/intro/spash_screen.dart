@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget {
         child: Image.asset(
           'assets/images/GiveNGet.gif',
           width: 200,
-          height: 200,         
+          height: 200,
         ),
       ),
     );

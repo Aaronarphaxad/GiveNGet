@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givenget/models/donation_item.dart';
 import 'package:givenget/services/items_service.dart';
 import 'package:givenget/widgets/explore/build_donation_card.dart';
+
 import '../components/custom_search_delegate.dart';
 
 class ExploreContent extends StatefulWidget {
@@ -43,7 +44,7 @@ class _ExploreContentState extends State<ExploreContent> {
         isLoading = false;
       });
     } catch (e) {
-      print('🔥 Error fetching items: $e');
+
     }
   }
 
@@ -61,7 +62,10 @@ class _ExploreContentState extends State<ExploreContent> {
         child: Scaffold(
           backgroundColor: Colors.white,
           body: isLoading
-              ? const Center(child: CircularProgressIndicator(color: Colors.green,))
+              ? const Center(
+                  child: CircularProgressIndicator(
+                  color: Colors.green,
+                ))
               : Padding(
                   padding: const EdgeInsets.only(top: 24.0),
                   child: Column(
@@ -75,14 +79,16 @@ class _ExploreContentState extends State<ExploreContent> {
                           child: Row(
                             children: categories.map((category) {
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
                                 child: ChoiceChip(
                                   label: Text(category),
                                   showCheckmark: false,
                                   selected: _selectedCategory == category,
                                   onSelected: (bool isSelected) {
                                     setState(() {
-                                      _selectedCategory = isSelected ? category : 'All';
+                                      _selectedCategory =
+                                          isSelected ? category : 'All';
                                     });
                                   },
                                   selectedColor: const Color(0xFF3A6351),
@@ -117,15 +123,18 @@ class _ExploreContentState extends State<ExploreContent> {
                             hintText: "Search items...",
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: Colors.black, width: 1),
+                              borderSide: const BorderSide(
+                                  color: Colors.black, width: 1),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: Colors.black, width: 2),
+                              borderSide: const BorderSide(
+                                  color: Colors.black, width: 2),
                             ),
-                            suffixIcon: const Icon(Icons.search, color: Colors.black),
-                            contentPadding:
-                                const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                            suffixIcon:
+                                const Icon(Icons.search, color: Colors.black),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 15),
                           ),
                         ),
                       ),

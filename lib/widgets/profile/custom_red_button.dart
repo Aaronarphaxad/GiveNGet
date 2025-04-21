@@ -13,24 +13,23 @@ class CustomRedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 20,right: 20),
+      padding: EdgeInsets.only(left: 20, right: 20),
       child: GestureDetector(
         onTap: () {
           Navigator.pushReplacementNamed(context, '/login');
-         },
+        },
         child: SizedBox(
-          width: double.infinity, 
-          height: 40, 
+          width: double.infinity,
+          height: 40,
           child: ElevatedButton(
-            onPressed: onPressed, 
+            onPressed: onPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white, 
-              foregroundColor: Colors.white, 
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 side: const BorderSide(color: Color(0xFFBA0000), width: 1),
-                borderRadius: BorderRadius.circular(20), 
+                borderRadius: BorderRadius.circular(20),
               ),
-              
             ),
             child: Text(
               text,

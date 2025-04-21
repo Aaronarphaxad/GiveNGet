@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:givenget/data/mock_data.dart';
+
+import 'package:flutter/material.dart';
 import 'package:givenget/models/donation_item.dart';
 import 'package:givenget/models/user.dart';
 import 'package:givenget/screens/main_screens/explore/interest_form_modal.dart';
@@ -14,7 +14,8 @@ class DonationDetailScreen extends StatefulWidget {
   final DonationItem item;
   final VoidCallback? refreshFavorites;
 
-  const DonationDetailScreen({super.key, required this.item, this.refreshFavorites});
+  const DonationDetailScreen(
+      {super.key, required this.item, this.refreshFavorites});
 
   @override
   State<DonationDetailScreen> createState() => _DonationDetailScreenState();
@@ -56,7 +57,8 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
 
   String _formattedNow() {
     final now = DateTime.now();
-    final hour = now.hour == 0 ? 12 : (now.hour > 12 ? now.hour - 12 : now.hour);
+    final hour =
+        now.hour == 0 ? 12 : (now.hour > 12 ? now.hour - 12 : now.hour);
     final minute = now.minute.toString().padLeft(2, '0');
     final ampm = now.hour >= 12 ? 'PM' : 'AM';
     return '${now.month}/${now.day}/${now.year} $hour:$minute $ampm';
@@ -64,11 +66,12 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
 
   void _toggleLike() async {
     if (currentUser == null) {
-      print("❌ No logged-in user found.");
       return;
     }
 
-    final alreadyLiked = currentUser?.likedIDItems.any((item) => item.id == widget.item.id) ?? false;
+    final alreadyLiked =
+        currentUser?.likedIDItems.any((item) => item.id == widget.item.id) ??
+            false;
 
     if (alreadyLiked) {
       showDialog(
@@ -76,7 +79,8 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: Colors.white,
-            title: const Text("Remove from Favourites", style: TextStyle(color: Colors.black)),
+            title: const Text("Remove from Favourites",
+                style: TextStyle(color: Colors.black)),
             content: const Text(
               "Are you sure you want to remove this item from your favourites?",
               style: TextStyle(color: Colors.black),
@@ -84,7 +88,8 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text("Cancel", style: TextStyle(color: Color(0xFF3A6351))),
+                child: const Text("Cancel",
+                    style: TextStyle(color: Color(0xFF3A6351))),
               ),
               TextButton(
                 onPressed: () async {
@@ -93,7 +98,8 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
                   await Future.delayed(const Duration(milliseconds: 100));
 
                   setState(() {
-                    currentUser!.likedIDItems.removeWhere((item) => item.id == widget.item.id);
+                    currentUser!.likedIDItems
+                        .removeWhere((item) => item.id == widget.item.id);
                   });
 
                   final success = await ItemsService().updateUserLikedItems(
@@ -115,10 +121,11 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
                       ),
                     );
                   } else {
-                    print('❌ Failed to update user');
+
                   }
                 },
-                child: const Text("Remove", style: TextStyle(color: Colors.red)),
+                child:
+                    const Text("Remove", style: TextStyle(color: Colors.red)),
               ),
             ],
           );
@@ -148,7 +155,7 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
           ),
         );
       } else {
-        print('❌ Failed to update user');
+
       }
     }
   }
@@ -165,10 +172,14 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
           IconButton(
             onPressed: _toggleLike,
             icon: Icon(
-              currentUser?.likedIDItems.any((item) => item.id == widget.item.id) ?? false
+              currentUser?.likedIDItems
+                          .any((item) => item.id == widget.item.id) ??
+                      false
                   ? Icons.favorite
                   : Icons.favorite_border,
-              color: currentUser?.likedIDItems.any((item) => item.id == widget.item.id) ?? false
+              color: currentUser?.likedIDItems
+                          .any((item) => item.id == widget.item.id) ??
+                      false
                   ? Colors.red
                   : Colors.grey,
             ),

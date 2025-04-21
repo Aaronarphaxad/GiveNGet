@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:givenget/services/auth_service.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 import 'package:givenget/widgets/components/custom_text_form_field.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
-import 'package:givenget/services/auth_service.dart';
-import '../main_screens/explore/explore_screen.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -26,7 +21,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
   void _registerUser() async {
     if (!_formKey.currentState!.validate()) {
-      print('⚠️ Form is not valid');
       return;
     }
 
@@ -45,7 +39,7 @@ class _SignupScreenState extends State<SignupScreen> {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('❌ Unable to get access token'),
+          content: Text('Unable to get access token'),
           backgroundColor: Colors.red,
         ),
       );
@@ -54,7 +48,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
     try {
       final result = await authService.registerUser(
-        name: '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}',
+        name:
+            '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}',
         email: _emailController.text.trim(),
         phone: _phoneController.text.trim(),
         password: _passwordController.text,
@@ -66,7 +61,7 @@ class _SignupScreenState extends State<SignupScreen> {
       if (result) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('✅ Registration successful'),
+            content: Text('Registration successful'),
             backgroundColor: Colors.green,
             duration: Duration(seconds: 2),
           ),
@@ -75,7 +70,7 @@ class _SignupScreenState extends State<SignupScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('❌ Registration failed'),
+            content: Text('Registration failed'),
             backgroundColor: Colors.red,
           ),
         );
@@ -84,7 +79,7 @@ class _SignupScreenState extends State<SignupScreen> {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('❌ Registration failed: $e'),
+          content: Text('Registration failed: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -129,7 +124,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         SizedBox(height: 16),
                         Text('Profile Image', style: TextStyle(fontSize: 14)),
                         SizedBox(height: 10),
-                        Icon(Icons.upload_rounded, size: 30, color: Color(0xFF3A6351)),
+                        Icon(Icons.upload_rounded,
+                            size: 30, color: Color(0xFF3A6351)),
                       ],
                     ),
                   ),
@@ -139,14 +135,18 @@ class _SignupScreenState extends State<SignupScreen> {
                   formFieldController: _firstNameController,
                   formFieldIcon: const Icon(Icons.person),
                   labelText: 'First Name',
-                  validation: (value) => value == null || value.isEmpty ? 'Please enter your first name' : null,
+                  validation: (value) => value == null || value.isEmpty
+                      ? 'Please enter your first name'
+                      : null,
                 ),
                 const SizedBox(height: 10),
                 CustomTextFormField(
                   formFieldController: _lastNameController,
                   formFieldIcon: const Icon(Icons.person),
                   labelText: 'Last Name',
-                  validation: (value) => value == null || value.isEmpty ? 'Please enter your last name' : null,
+                  validation: (value) => value == null || value.isEmpty
+                      ? 'Please enter your last name'
+                      : null,
                 ),
                 const SizedBox(height: 10),
                 CustomTextFormField(
@@ -154,8 +154,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   formFieldIcon: const Icon(Icons.email),
                   labelText: 'Email Address',
                   validation: (value) {
-                    if (value == null || value.isEmpty) return 'Please enter your email';
-                    if (!value.contains('@')) return 'Please enter a valid email';
+                    if (value == null || value.isEmpty)
+                      return 'Please enter your email';
+                    if (!value.contains('@'))
+                      return 'Please enter a valid email';
                     return null;
                   },
                 ),
@@ -165,8 +167,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   formFieldIcon: const Icon(Icons.phone),
                   labelText: 'Phone Number',
                   validation: (value) {
-                    if (value == null || value.isEmpty) return 'Please enter your phone number';
-                    if (value.length < 10) return 'Please enter a valid phone number';
+                    if (value == null || value.isEmpty)
+                      return 'Please enter your phone number';
+                    if (value.length < 10)
+                      return 'Please enter a valid phone number';
                     return null;
                   },
                 ),
@@ -176,8 +180,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   formFieldIcon: const Icon(Icons.lock),
                   labelText: 'Password',
                   validation: (value) {
-                    if (value == null || value.isEmpty) return 'Please enter a password';
-                    if (value.length < 8) return 'Password must be at least 8 characters';
+                    if (value == null || value.isEmpty)
+                      return 'Please enter a password';
+                    if (value.length < 8)
+                      return 'Password must be at least 8 characters';
                     return null;
                   },
                 ),
@@ -186,8 +192,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   formFieldController: _confirmPasswordController,
                   formFieldIcon: const Icon(Icons.lock),
                   labelText: 'Confirm Password',
-                  validation: (value) =>
-                  value != _passwordController.text ? 'Passwords do not match' : null,
+                  validation: (value) => value != _passwordController.text
+                      ? 'Passwords do not match'
+                      : null,
                 ),
                 const SizedBox(height: 20),
                 CustomGreenButton(text: 'Sign Up', onPressed: _registerUser),
@@ -197,10 +204,13 @@ class _SignupScreenState extends State<SignupScreen> {
                   children: [
                     const Text(
                       'Already have an account?',
-                      style: TextStyle(fontSize: 16, color: Color.fromARGB(255, 115, 114, 114)),
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Color.fromARGB(255, 115, 114, 114)),
                     ),
                     TextButton(
-                      onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+                      onPressed: () =>
+                          Navigator.pushReplacementNamed(context, '/login'),
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.only(left: 4),
                         minimumSize: Size.zero,
@@ -227,68 +237,3 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 }
-
-
-
-
-
-
-                    /*
-                     // removing sign up logic for now                    
-                       // Simulate sign up 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Sign Up Successful!',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            duration: const Duration(seconds: 2),
-                            backgroundColor: Colors.white,
-                          ),
-                        );
-                       Navigator.pushReplacementNamed(context, '/login');
-                    */
-
-
-
-/*
-OLD SHARED PREFERENCES CODE
-  void _signup() async {
-    if (_formKey.currentState!.validate()) {
-      // Form is valid, proceed with signup
-      final firstName = _firstNameController.text;
-      final lastName = _lastNameController.text;
-      final email = _emailController.text;
-      final phone = _phoneController.text;
-      final password = _passwordController.text;
-
-      // Checking if the email is already registered
-      final existingUser = await AuthService.getUserByEmail(email);
-      if (existingUser != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Email already registered'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-        return;
-      }
-
-      await AuthService.saveUserDetails(
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phone: phone,
-        password: password,
-        userStatus: 'user',
-      );
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('currentUserEmail', email);
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ExploreScreen()),
-      );
-    }
-  }
-  */

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:givenget/widgets/profile/custom_red_button.dart';
 import 'package:givenget/widgets/profile/profile_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../services/auth_service.dart';
-import '../../auth/auth_service.dart';
 import '../my_donations_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -15,12 +14,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // String _userStatus = 'guest';
-  // String _firstName = 'Jonathan';
-  // String _lastName = 'Smith';
-  // String _email = 'jonathansmith@gmail.com';
-  // String _phone = '+1 800-need-free-stuff';
-  // int _donations = 24;
 
   String _userStatus = '';
   String _firstName = '';
@@ -34,7 +27,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     _loadUserData();
   }
-
 
   Future<void> _loadUserData() async {
     final authService = AuthService();
@@ -50,39 +42,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _donations = (user['donatedIDItems'] as List?)?.length ?? 0;
       });
     } else {
-      print('❌ Failed to load user data');
+
     }
   }
-
-
-/* - taking this out for now, using static data
-  @override
-  void initState() {
-    super.initState();
-    _loadUserData(); 
-  }
-  */
-
-/*
-  // Load user data from SharedPreferences 
-  _loadUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final email = prefs.getString('currentUserEmail') ?? '';
-
-    if (email.isNotEmpty) {
-      final user = await AuthService.getUserByEmail(email);
-      if (user != null) {
-        setState(() {
-          _firstName = user['firstName'] ?? 'Guest';
-          _lastName = user['lastName'] ?? '';
-          _email = user['email'] ?? '';
-          _phone = user['phone'] ?? '';
-          _userStatus = user['userStatus'] ?? 'guest';
-        });
-      }
-    }
-  }
-*/
 
   @override
   Widget build(BuildContext context) {
@@ -95,108 +57,153 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         actions: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               Navigator.pushNamed(context, '/notifications');
             },
-            child: Stack(
-              alignment: Alignment.bottomLeft,
-              children: [
-              Icon(Icons.notifications_active, color: Color.fromARGB(255, 162, 1, 1),size: 30,),
-               Container(
+            child: Stack(alignment: Alignment.bottomLeft, children: [
+              Icon(
+                Icons.notifications_active,
+                color: Color.fromARGB(255, 162, 1, 1),
+                size: 30,
+              ),
+              Container(
                 width: 16,
-                height: 16, 
+                height: 16,
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 162, 1, 1),
-                  shape: BoxShape.circle, 
+                  shape: BoxShape.circle,
                 ),
-                alignment: Alignment.center, 
+                alignment: Alignment.center,
                 child: const Text(
                   '5',
                   style: TextStyle(
-                    color: Colors.white, 
+                    color: Colors.white,
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              ]           
-            ),
+            ]),
           ),
-          SizedBox(width: 16,),
+          SizedBox(
+            width: 16,
+          ),
         ],
       ),
       body: Column(
         children: [
-              Container(
-                height: 280,
-                decoration: BoxDecoration(
-                  color: Color(0xFF3A6351),
-                  borderRadius: BorderRadius.circular(8), 
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  CircleAvatar(
+          Container(
+            height: 280,
+            decoration: BoxDecoration(
+              color: Color(0xFF3A6351),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
                   radius: 80,
                   child: Image.asset('assets/images/profile-image.png'),
                 ),
                 SizedBox(height: 20),
                 Text(
                   '$_firstName $_lastName',
-                  style: const TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 24,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.star, color: Color(0xFFFDCC0D),size: 20,),
-                        Icon(Icons.star, color: Color(0xFFFDCC0D),size: 20,),
-                        Icon(Icons.star, color: Color(0xFFFDCC0D),size: 20,),
-                        Icon(Icons.star, color: Color(0xFFFDCC0D),size: 20,),
-                        Icon(Icons.star_half, color: Color(0xFFFDCC0D),size: 20,)
+                        Icon(
+                          Icons.star,
+                          color: Color(0xFFFDCC0D),
+                          size: 20,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Color(0xFFFDCC0D),
+                          size: 20,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Color(0xFFFDCC0D),
+                          size: 20,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Color(0xFFFDCC0D),
+                          size: 20,
+                        ),
+                        Icon(
+                          Icons.star_half,
+                          color: Color(0xFFFDCC0D),
+                          size: 20,
+                        )
                       ],
                     ),
-                    Text(' | $_donations Donations', style: TextStyle(color: Colors.white, fontSize: 16),)
+                    Text(
+                      ' | $_donations Donations',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    )
                   ],
                 )
-               ],
-              ),
+              ],
             ),
-          SizedBox(height: 30,),
+          ),
+          SizedBox(
+            height: 30,
+          ),
           ProfileItem(
-            itemListIcon: Icons.person, 
+            itemListIcon: Icons.person,
             itemListName: 'Account Details',
-            onPressed: (){
+            onPressed: () {
               Navigator.pushNamed(context, '/account-details');
             },
           ),
           const SizedBox(height: 3),
-          ProfileItem(itemListIcon: Icons.favorite, itemListName: 'My Donations',onPressed: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const MyDonationsScreen()),
-            );},),
+          ProfileItem(
+            itemListIcon: Icons.favorite,
+            itemListName: 'My Donations',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const MyDonationsScreen()),
+              );
+            },
+          ),
           const SizedBox(height: 3),
-          ProfileItem(itemListIcon: Icons.language, itemListName: 'Change Language',onPressed: (){},),
+          ProfileItem(
+            itemListIcon: Icons.language,
+            itemListName: 'Change Language',
+            onPressed: () {},
+          ),
           const SizedBox(height: 3),
-          ProfileItem(itemListIcon: Icons.support_agent, itemListName: 'Help & Support',onPressed: (){},),
+          ProfileItem(
+            itemListIcon: Icons.support_agent,
+            itemListName: 'Help & Support',
+            onPressed: () {},
+          ),
           const SizedBox(height: 40),
           Expanded(
             child: Align(
               alignment: Alignment.bottomCenter,
               child: CustomRedButton(
-              // onPressed: () async {
-               // final prefs = await SharedPreferences.getInstance();
-              //  await prefs.remove('currentUserEmail');
+                // onPressed: () async {
+                // final prefs = await SharedPreferences.getInstance();
+                //  await prefs.remove('currentUserEmail');
                 onPressed: () async {
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.clear();
                   Navigator.pushReplacementNamed(context, '/login');
-              },
-              text: 'Logout',
-                        ),
-            ), 
+                },
+                text: 'Logout',
+              ),
+            ),
           ),
           const SizedBox(height: 10),
         ],
@@ -204,7 +211,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-
-
-
-

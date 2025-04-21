@@ -22,12 +22,17 @@ class CustomTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         prefixIcon: formFieldIcon,
         prefixIconColor: MaterialStateColor.resolveWith((states) =>
-          states.contains(MaterialState.focused) ? const Color(0xFF3A6351) : Colors.grey), // Change on focus
+            states.contains(MaterialState.focused)
+                ? const Color(0xFF3A6351)
+                : Colors.grey),
+        // Change on focus
         labelText: labelText,
-        floatingLabelStyle: const TextStyle(color: Color(0xFF3A6351)), // Label color on focus
+        floatingLabelStyle: const TextStyle(color: Color(0xFF3A6351)),
+        // Label color on focus
         border: const OutlineInputBorder(),
         focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFF3A6351), width: 2), // Change focus color
+          borderSide: BorderSide(
+              color: Color(0xFF3A6351), width: 2), // Change focus color
         ),
       ),
       validator: validation, // Uses passed validation function

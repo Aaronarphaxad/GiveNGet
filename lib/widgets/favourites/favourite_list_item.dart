@@ -18,10 +18,12 @@ class FavouriteDonationGridListItem extends StatefulWidget {
   });
 
   @override
-  State<FavouriteDonationGridListItem> createState() => _FavouriteDonationGridListItemState();
+  State<FavouriteDonationGridListItem> createState() =>
+      _FavouriteDonationGridListItemState();
 }
 
-class _FavouriteDonationGridListItemState extends State<FavouriteDonationGridListItem> {
+class _FavouriteDonationGridListItemState
+    extends State<FavouriteDonationGridListItem> {
   String donorName = '...';
 
   @override
@@ -78,7 +80,8 @@ class _FavouriteDonationGridListItemState extends State<FavouriteDonationGridLis
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 4.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -92,7 +95,8 @@ class _FavouriteDonationGridListItemState extends State<FavouriteDonationGridLis
                         ),
                         Text(
                           'Posted ${item.datePosted}',
-                          style: const TextStyle(fontSize: 12, color: Colors.grey),
+                          style:
+                              const TextStyle(fontSize: 12, color: Colors.grey),
                         ),
                       ],
                     ),
@@ -115,7 +119,8 @@ class _FavouriteDonationGridListItemState extends State<FavouriteDonationGridLis
                         await widget.removeFromFavourites(context, item);
                         widget.refreshFavourites?.call();
                       },
-                      icon: const Icon(Icons.clear, color: Colors.white, size: 14),
+                      icon: const Icon(Icons.clear,
+                          color: Colors.white, size: 14),
                     ),
                   ),
                 ),

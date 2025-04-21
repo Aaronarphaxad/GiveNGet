@@ -3,11 +3,8 @@ import 'package:givenget/services/auth_service.dart';
 import 'package:givenget/widgets/components/custom_green_button.dart';
 import 'package:givenget/widgets/components/custom_text_form_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../models/user.dart';
-import '../../services/session_manager.dart';
-import 'auth_service.dart';
-import '../main_screens/explore/explore_screen.dart';
 
+import '../../services/session_manager.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,13 +28,13 @@ class _LoginScreenState extends State<LoginScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => const Center(child: CircularProgressIndicator(color: Colors.green)),
+      builder: (context) =>
+          const Center(child: CircularProgressIndicator(color: Colors.green)),
     );
 
     try {
-      print('🔄 Calling loginUser with $email');
-      final result = await AuthService().loginUser(email: email, password: password);
-      print('🔁 loginUser returned: $result');
+      final result =
+          await AuthService().loginUser(email: email, password: password);
 
       Navigator.pop(context); // Close loading dialog
 
@@ -46,29 +43,16 @@ class _LoginScreenState extends State<LoginScreen> {
         await prefs.setString('token', result['token']);
         await prefs.setString('userId', result['userId']);
 
-        // await SessionManager().setToken(result['token']);
-        // await SessionManager().setUserId(result['userId']);
-
         // Optionally fetch user profile here if needed
         final userProfile = await AuthService().getUserProfile();
 
-
-        print('🔐 Token: ${result['token']}');
-        print('👤 UserId: ${result['userId']}');
-        print('📡 Profile: $userProfile');
-
         if (userProfile != null) {
-          print('✅ User profile loaded: ${userProfile['email']}');
-
           await SessionManager().initializeFromPrefs();
-
-          // final user = User.fromJson(userProfile); // make sure you have this model
-          // SessionManager().setCurrentUser(user);   // 🔑 This makes the user available globally
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('✅ Login successful'),
+            content: Text('Login successful'),
             backgroundColor: Colors.green,
             duration: Duration(seconds: 2),
           ),
@@ -78,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('❌ Invalid email or password'),
+            content: Text('Invalid email or password'),
             backgroundColor: Colors.red,
             duration: Duration(seconds: 2),
           ),
@@ -88,14 +72,13 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pop(context); // Close loading dialog
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('❌ Error: $e'),
+          content: Text('Error: $e'),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 2),
         ),
       );
     }
   }
-    
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Form(
             key: _formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center, 
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // LOGO
@@ -122,8 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 120,
                   height: 50,
                 ),
-                const SizedBox(height: 20), 
-            
+                const SizedBox(height: 20),
+
                 // EMAIL FIELD
                 CustomTextFormField(
                   formFieldController: _emailController,
@@ -137,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-            
+
                 // PASSWORD FIELD
                 CustomTextFormField(
                   formFieldController: _passwordController,
@@ -151,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-            
+
                 // FORGOT PASSWORD
                 Align(
                   alignment: Alignment.centerRight,
@@ -177,14 +160,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-            
+
                 // LOGIN BUTTON
                 CustomGreenButton(
-                  text: 'Login', 
+                  text: 'Login',
                   onPressed: _login,
                 ),
                 const SizedBox(height: 5),
-            
+
                 // SIGNUP OPTION
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -198,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                       Navigator.pushReplacementNamed(context, '/signup');
+                        Navigator.pushReplacementNamed(context, '/signup');
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
@@ -228,60 +211,3 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-
-
-
-/*
-  void _login() async {
-    final email = _emailController.text;
-    final password = _passwordController.text;
-    final emailRegex = RegExp(
-      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-    );
-
-    // Admin login
-    if (email == 'admin' && password == 'admin') {
-      await AuthService.saveUserDetails(
-        firstName: 'Admin',
-        lastName: 'User',
-        email: email,
-        phone: 'N/A',
-        password: password,
-        userStatus: 'admin',
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ExploreScreen()),
-      );
-    }
-    // Validate email
-    else if (email.isEmpty || !emailRegex.hasMatch(email)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a valid email'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-
-    // Regular user login
-    if (await AuthService.authenticate(email, password)) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('currentUserEmail', email);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ExploreScreen()),
-      );
-    }
-    // Invalid credentials
-    else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Invalid email or password'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
-  }
-  */

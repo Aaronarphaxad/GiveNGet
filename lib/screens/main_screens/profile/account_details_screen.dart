@@ -39,38 +39,40 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Account Details'),
         centerTitle: true,
-          actions: [
-          Stack(
-              alignment: Alignment.bottomLeft,
-              children: [
-                Icon(Icons.notifications_active, color: Color.fromARGB(255, 162, 1, 1),size: 30,),
-              Container(
-                width: 16,
-                height: 16, 
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 162, 1, 1),
-                  shape: BoxShape.circle, 
-                ),
-                alignment: Alignment.center, 
-                child: const Text(
-                  '5',
-                  style: TextStyle(
-                    color: Colors.white, 
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                  ),
+        actions: [
+          Stack(alignment: Alignment.bottomLeft, children: [
+            Icon(
+              Icons.notifications_active,
+              color: Color.fromARGB(255, 162, 1, 1),
+              size: 30,
+            ),
+            Container(
+              width: 16,
+              height: 16,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 162, 1, 1),
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: const Text(
+                '5',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              ]           
             ),
-          SizedBox(width: 16,),
+          ]),
+          SizedBox(
+            width: 16,
+          ),
         ],
       ),
       backgroundColor: Colors.white,
@@ -78,15 +80,15 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
         child: Column(
           children: [
             Container(
-                height: 360,
-                width: double.infinity,
-                child: Image.asset(
-                  'assets/images/big-profile-image.png',
-                  fit: BoxFit.cover, 
-                ),
+              height: 360,
+              width: double.infinity,
+              child: Image.asset(
+                'assets/images/big-profile-image.png',
+                fit: BoxFit.cover,
+              ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 6,right: 6,top: 12),
+              padding: EdgeInsets.only(left: 6, right: 6, top: 12),
               child: Column(
                 children: [
                   Container(
@@ -112,60 +114,63 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                       ),
                     ),
                   ),
-                SizedBox(height: 10),
-                 CustomGreenButton(
-                   text: 'Edit',
-                   onPressed: (){
-                     showModalBottomSheet(
-                       context: context,
-                       isScrollControlled: true,
-                       shape: RoundedRectangleBorder(
-                         borderRadius: BorderRadius.vertical(top:Radius.circular(16)),
-                       ),
-                       builder: (context)=>EditProfileSheet(
-                         name: name,
-                         phone: phone,
-                         email: email,
-                         location: location,
-                         onSave: (updated) {
-                           setState(() {
-                             name = updated['name']!;
-                             phone = updated['phone']!;
-                             email = updated['email']!;
-                             location = updated['location']!;
-                           });
-                         },
-                       ),
-                     );
-                   }),
-                SizedBox(height: 10),
+                  SizedBox(height: 10),
+                  CustomGreenButton(
+                      text: 'Edit',
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(16)),
+                          ),
+                          builder: (context) => EditProfileSheet(
+                            name: name,
+                            phone: phone,
+                            email: email,
+                            location: location,
+                            onSave: (updated) {
+                              setState(() {
+                                name = updated['name']!;
+                                phone = updated['phone']!;
+                                email = updated['email']!;
+                                location = updated['location']!;
+                              });
+                            },
+                          ),
+                        );
+                      }),
+                  SizedBox(height: 10),
                 ],
               ),
             )
-            
           ],
         ),
       ),
     );
   }
 
-  // ✅ Reusable function for text rows
+  //function for text rows
   Widget _buildInfoRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
           Expanded(
-            flex: 2, 
+            flex: 2,
             child: Text(
               label,
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
-            flex: 3, 
+            flex: 3,
             child: Align(
-              alignment: Alignment.centerLeft, 
+              alignment: Alignment.centerLeft,
               child: Text(
                 value,
                 style: TextStyle(color: Colors.white, fontSize: 16),
@@ -185,19 +190,25 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
           Expanded(
             flex: 1,
             child: Text(
-              "Rating: ", 
+              "Rating: ",
               style: TextStyle(
-                color: Colors.white, 
-                fontSize: 18, 
-                fontWeight: FontWeight.bold),
-                ),
-              ),
-              SizedBox(width: 30,),
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          SizedBox(
+            width: 30,
+          ),
           Expanded(
             flex: 2,
             child: Row(
-              children: List.generate(4, (index) => Icon(Icons.star, color: Color(0xFFFDCC0D), size: 20))
-                ..add(Icon(Icons.star_half, color: Color(0xFFFDCC0D), size: 20)), // Half Star
+              children: List.generate(
+                  4,
+                  (index) =>
+                      Icon(Icons.star, color: Color(0xFFFDCC0D), size: 20))
+                ..add(Icon(Icons.star_half,
+                    color: Color(0xFFFDCC0D), size: 20)), // Half Star
             ),
           ),
         ],
@@ -250,13 +261,15 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
         padding: EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Edit Profile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text("Edit Profile",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             SizedBox(height: 12),
             _buildField("Name", nameController),
             _buildField("Phone", phoneController),
@@ -272,7 +285,7 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
                   'location': locationController.text,
                 };
 
-                // TODO: Call PUT /api/givenget/users/{id} here
+                // update user prof
                 final success = await UserService().updateUserProfile({
                   'name': nameController.text,
                   'email': emailController.text,
@@ -287,9 +300,10 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
                     'phone': phoneController.text,
                     'location': locationController.text,
                   });
-                  Navigator.pop(context);  ScaffoldMessenger.of(context).showSnackBar(
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('✅ Profile updated successfully!'),
+                      content: Text('Profile updated successfully!'),
                       backgroundColor: Colors.green,
                       duration: Duration(seconds: 2),
                     ),
@@ -297,12 +311,11 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('❌ Failed to update profile'),
+                      content: Text('Failed to update profile'),
                       backgroundColor: Colors.red,
                     ),
                   );
                 }
-
               },
               child: Text("Save"),
             )

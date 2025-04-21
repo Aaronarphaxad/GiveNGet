@@ -49,12 +49,11 @@ class SessionManager {
       final user = await UserService().fetchUserById(userId);
       if (user != null) {
         setCurrentUser(user);
-        print('✅ SessionManager initialized with user: ${user.email}');
       } else {
-        print('⚠️ Failed to fetch user from backend');
+
       }
     } else {
-      print('⚠️ No userId found in SharedPreferences');
+
     }
   }
 }

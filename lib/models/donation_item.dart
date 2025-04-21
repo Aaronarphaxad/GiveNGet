@@ -29,7 +29,7 @@ class DonationItem {
       title: json['title'] ?? '',
       description: json['description'] ?? '',
       category: json['category'] ?? '',
-      imageUrl: (json['imageUrls'] as List?)?.first ?? '', // get first image
+      imageUrl: (json['imageUrls'] as List?)?.first ?? '',
       donor: json['donorId'] ?? '',
       location: json['location'] ?? '',
       datePosted: json['datePosted'] ?? '',
@@ -52,7 +52,6 @@ class DonationItem {
       condition: '',
     );
   }
-
 
   Map<String, dynamic> toJson() {
     return {

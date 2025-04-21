@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,7 +14,8 @@ class CustomUploadImageWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CustomUploadImageWidget> createState() => _CustomUploadImageWidgetState();
+  State<CustomUploadImageWidget> createState() =>
+      _CustomUploadImageWidgetState();
 }
 
 class _CustomUploadImageWidgetState extends State<CustomUploadImageWidget> {

@@ -37,7 +37,9 @@ class User {
       email: json['email'] ?? '',
       password: json['password'] ?? '',
       location: json['location'] ?? '',
-      rating: json['rating'] is int ? json['rating'] : int.tryParse(json['rating']?.toString() ?? '0') ?? 0,
+      rating: json['rating'] is int
+          ? json['rating']
+          : int.tryParse(json['rating']?.toString() ?? '0') ?? 0,
       likedIDItems: (json['likedIDItems'] as List<dynamic>? ?? [])
           .map((id) => DonationItem.fromId(id.toString()))
           .toList(),
@@ -48,37 +50,10 @@ class User {
           .map((id) => DonationItem.fromId(id.toString()))
           .toList(),
       notifications: List<String>.from(json['notifications'] ?? []),
-      createdAt: DateTime.tryParse(json['createdAt']?.toString() ?? '') ?? DateTime.now(),
+      createdAt: DateTime.tryParse(json['createdAt']?.toString() ?? '') ??
+          DateTime.now(),
     );
   }
-
-
-
-  // factory User.fromJson(Map<String, dynamic> json) {
-  //   return User(
-  //     id: json['id'] ?? '',
-  //     name: json['name'] ?? '',
-  //     phoneNum: json['phoneNum'] ?? '',
-  //     email: json['email'] ?? '',
-  //     password: json['password'] ?? '',
-  //     location: json['location'] ?? '',
-  //     rating: json['rating'] ?? 0,
-  //     likedIDItems: (json['likedIDItems'] as List<dynamic>?)
-  //             ?.map((item) => DonationItem.fromJson(item))
-  //             .toList() ??
-  //         [],
-  //     donatedIDItems: (json['donatedIDItems'] as List<dynamic>?)
-  //             ?.map((item) => DonationItem.fromJson(item))
-  //             .toList() ??
-  //         [],
-  //     receivedIDItems: (json['receivedIDItems'] as List<dynamic>?)
-  //             ?.map((item) => DonationItem.fromJson(item))
-  //             .toList() ??
-  //         [],
-  //     notifications: List<String>.from(json['notifications'] ?? []),
-  //     createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
-  //   );
-  // }
 
   Map<String, dynamic> toJson() {
     return {

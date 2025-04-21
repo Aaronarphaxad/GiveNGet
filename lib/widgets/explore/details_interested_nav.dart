@@ -16,7 +16,7 @@ class DetailsAndInterestedNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = currentSelected == tabValue; 
+    bool isSelected = currentSelected == tabValue;
 
     return GestureDetector(
       onTap: onPressed,

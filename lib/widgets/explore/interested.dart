@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 class Interested extends StatelessWidget {
   final List<InterestEntry> entries;
@@ -8,7 +9,10 @@ class Interested extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<InterestEntry> combinedEntries = [...generateMockInterests(5), ...entries];
+    final List<InterestEntry> combinedEntries = [
+      ...generateMockInterests(5),
+      ...entries
+    ];
 
     return Column(
       children: [
@@ -25,7 +29,9 @@ class Interested extends StatelessWidget {
             ),
           ),
         ),
-        ...combinedEntries.map((entry) => InterestedPeople(entry: entry)).toList(),
+        ...combinedEntries
+            .map((entry) => InterestedPeople(entry: entry))
+            .toList(),
         const SizedBox(height: 80),
       ],
     );
@@ -135,7 +141,13 @@ class InterestEntry {
 }
 
 List<InterestEntry> generateMockInterests(int count) {
-  final names = ['Ava Smith', 'Liam Johnson', 'Olivia Brown', 'Noah Lee', 'Emma Davis'];
+  final names = [
+    'Ava Smith',
+    'Liam Johnson',
+    'Olivia Brown',
+    'Noah Lee',
+    'Emma Davis'
+  ];
   final messages = [
     'I’d really appreciate this!',
     'Could I come pick it up tomorrow?',
@@ -169,7 +181,8 @@ String generateRandomTime() {
   final minutesAgo = random.nextInt(720); // up to 12 hours ago
   final date = now.subtract(Duration(minutes: minutesAgo));
 
-  final hour = date.hour == 0 ? 12 : (date.hour > 12 ? date.hour - 12 : date.hour);
+  final hour =
+      date.hour == 0 ? 12 : (date.hour > 12 ? date.hour - 12 : date.hour);
   final minute = date.minute.toString().padLeft(2, '0');
   final ampm = date.hour >= 12 ? 'PM' : 'AM';
 

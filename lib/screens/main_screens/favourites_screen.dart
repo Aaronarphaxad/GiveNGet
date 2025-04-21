@@ -29,16 +29,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     await SessionManager().initializeFromPrefs();
 
     setState(() {
-      currentUser = SessionManager().getCurrentUser(); // ✅ Get user after prefs init
+      currentUser =
+          SessionManager().getCurrentUser();
     });
 
     if (currentUser == null) {
-      print("❌ No user logged in after init.");
       setState(() => isLoading = false);
       return;
     }
-
-    print("👤 Logged in as: ${currentUser!.name} - ${currentUser!.email}");
 
     final items = await ItemsService().fetchLikedItems(currentUser!.id);
     setState(() {
@@ -51,13 +49,15 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     _loadFavourites();
   }
 
-  Future<void> removeFromFavourites(BuildContext context, DonationItem donationItem) async {
+  Future<void> removeFromFavourites(
+      BuildContext context, DonationItem donationItem) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.white,
-          title: const Text("Remove from Favourites", style: TextStyle(color: Colors.black)),
+          title: const Text("Remove from Favourites",
+              style: TextStyle(color: Colors.black)),
           content: const Text(
             "Are you sure you want to remove this item from your favourites?",
             style: TextStyle(color: Colors.black),
@@ -65,19 +65,19 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Cancel", style: TextStyle(color: Color(0xFF3A6351))),
+              child: const Text("Cancel",
+                  style: TextStyle(color: Color(0xFF3A6351))),
             ),
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
 
                 setState(() {
-                  favouriteItems.removeWhere((item) => item.id == donationItem.id);
-                  currentUser!.likedIDItems.removeWhere((item) => item.id == donationItem.id);
+                  favouriteItems
+                      .removeWhere((item) => item.id == donationItem.id);
+                  currentUser!.likedIDItems
+                      .removeWhere((item) => item.id == donationItem.id);
                 });
-
-                print("🧠 Updating likes for: ${currentUser?.name} - ${currentUser?.email} - ${currentUser?.id}");
-                print("🧠 The liked item was donated by: ${donationItem.donor}");
 
                 final success = await ItemsService().updateUserLikedItems(
                   userId: currentUser!.id,
@@ -86,7 +86,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 );
 
                 if (!success) {
-                  print("❌ Failed to sync removed item with backend.");
+
                 }
               },
               child: const Text("Remove", style: TextStyle(color: Colors.red)),
@@ -123,7 +123,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                             cursorColor: const Color(0xFF3A6351),
                             decoration: const InputDecoration(
                               focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Color(0xFF3A6351), width: 2),
+                                borderSide: BorderSide(
+                                    color: Color(0xFF3A6351), width: 2),
                               ),
                               border: OutlineInputBorder(),
                               label: Text('Search items...'),
@@ -135,7 +136,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         ),
                         IconButton(
                           onPressed: () {},
-                          icon: const Icon(Icons.search, color: Color(0xFF3A6351)),
+                          icon: const Icon(Icons.search,
+                              color: Color(0xFF3A6351)),
                         ),
                       ],
                     ),
@@ -143,7 +145,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: GridView.builder(
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 6,
                             mainAxisSpacing: 6,

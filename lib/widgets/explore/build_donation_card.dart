@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givenget/models/donation_item.dart';
-import 'package:givenget/services/user_service.dart';
 import 'package:givenget/screens/main_screens/explore/donation_detail_screen.dart';
+import 'package:givenget/services/user_service.dart';
 
 Widget buildDonationCard(BuildContext context, DonationItem item) {
   return FutureBuilder(
@@ -50,7 +50,8 @@ Widget buildDonationCard(BuildContext context, DonationItem item) {
                 ),
                 // Text content
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0, vertical: 4.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -64,7 +65,8 @@ Widget buildDonationCard(BuildContext context, DonationItem item) {
                       ),
                       Text(
                         'Posted ${item.datePosted}',
-                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.grey),
                       ),
                     ],
                   ),
