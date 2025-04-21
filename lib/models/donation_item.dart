@@ -38,6 +38,21 @@ class DonationItem {
     );
   }
 
+  factory DonationItem.fromId(String id) {
+    return DonationItem(
+      id: id,
+      title: '',
+      description: '',
+      category: '',
+      imageUrl: '',
+      donor: '',
+      location: '',
+      datePosted: '',
+      availability: false,
+      condition: '',
+    );
+  }
+
 
   Map<String, dynamic> toJson() {
     return {

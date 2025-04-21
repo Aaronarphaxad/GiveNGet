@@ -40,7 +40,7 @@ class ItemsService {
     required User currentUser,
     required DonationItem likedItem,
   }) async {
-    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/$userId');
+    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/full/$userId');
 
     // Get the access token
     // final accessToken = await AuthService().getAccessToken();
@@ -113,9 +113,17 @@ class ItemsService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> json = jsonDecode(response.body);
         final user = User.fromJson(json);
+        final List<DonationItem> items = [];
 
-        print("✅ Liked items fetched for user ${user.name}");
-        return user.likedIDItems;
+        for (final item in user.likedIDItems) {
+          final itemDetails = await fetchDonationItemById(item.id);
+          if (itemDetails != null) {
+            items.add(itemDetails);
+          }
+        }
+
+        return items;
+
       } else {
         print("❌ Failed to fetch liked items: ${response.statusCode}");
         return [];
@@ -123,6 +131,32 @@ class ItemsService {
     } catch (e) {
       print('🔥 Error fetching liked items: $e');
       return [];
+    }
+  }
+
+  Future<DonationItem?> fetchDonationItemById(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final accessToken = prefs.getString('token');
+
+    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/items/$id');
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return DonationItem.fromJson(jsonDecode(response.body));
+      } else {
+        print('❌ Failed to fetch item: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('🔥 Error fetching donation item: $e');
+      return null;
     }
   }
 
