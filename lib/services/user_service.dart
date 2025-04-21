@@ -15,8 +15,6 @@ class UserService {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
 
-      print('🔐 Access Token: $token');
-
       final response = await http.get(
         url,
         headers: {
