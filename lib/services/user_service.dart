@@ -10,7 +10,7 @@ class UserService {
 
   Future<User?> fetchUserById(String userId) async {
     // CHANGE IP HERE
-    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/$userId');
+    final url = Uri.parse('http://192.168.1.87:8080/api/givenget/users/$userId');
 
     try {
       // 🔐 Get the access token (assumes getAccessToken returns a Map)
@@ -61,7 +61,7 @@ class UserService {
       return false;
     }
 
-    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/$userId');
+    final url = Uri.parse('http://192.168.1.87:8080/api/givenget/users/$userId');
 
     final response = await http.put(
       url,

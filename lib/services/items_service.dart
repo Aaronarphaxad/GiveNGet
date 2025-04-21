@@ -10,7 +10,7 @@ class ItemsService {
 
 
   Future<List<DonationItem>> fetchDonationItems() async {
-    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/items');
+    final url = Uri.parse('http://192.168.1.87:8080/api/givenget/items');
 
     try {
       final response = await http.get(url);
@@ -40,7 +40,7 @@ class ItemsService {
     required User currentUser,
     required DonationItem likedItem,
   }) async {
-    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/full/$userId');
+    final url = Uri.parse('http://192.168.1.87:8080/api/givenget/users/full/$userId');
 
     // Get the access token
     // final accessToken = await AuthService().getAccessToken();
@@ -92,7 +92,7 @@ class ItemsService {
   }
 
   Future<List<DonationItem>> fetchLikedItems(String userId) async {
-    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/users/$userId');
+    final url = Uri.parse('http://192.168.1.87:8080/api/givenget/users/$userId');
 
     try {
       // final accessToken = await AuthService().getAccessToken();
@@ -138,7 +138,7 @@ class ItemsService {
     final prefs = await SharedPreferences.getInstance();
     final accessToken = prefs.getString('token');
 
-    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/items/$id');
+    final url = Uri.parse('http://192.168.1.87:8080/api/givenget/items/$id');
     try {
       final response = await http.get(
         url,
@@ -161,7 +161,7 @@ class ItemsService {
   }
 
   Future<List<DonationItem>> fetchUserDonations(String donorId) async {
-    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/items/donor/$donorId');
+    final url = Uri.parse('http://192.168.1.87:8080/api/givenget/items/donor/$donorId');
 
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
@@ -190,7 +190,8 @@ class ItemsService {
 
 Future<bool> submitDonationItem(DonationItem item) async {
   final url = Uri.parse('http://192.168.1.87:8080/api/givenget/items');
-  final accessToken = await AuthService().getAccessToken();
+  final prefs = await SharedPreferences.getInstance();
+  final accessToken = prefs.getString('token');
 
   try {
     final response = await http.post(
@@ -226,7 +227,7 @@ Future<bool> submitDonationItem(DonationItem item) async {
       return false;
     }
 
-    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/items/$itemId');
+    final url = Uri.parse('http://192.168.1.87:8080/api/givenget/items/$itemId');
     final response = await http.delete(
       url,
       headers: {

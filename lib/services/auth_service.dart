@@ -8,35 +8,39 @@ class AuthService {
   static const String _clientId = 'givenget';
   static const String _clientSecret = 'SuperSecret';
   // CHANGE THE IP BELOW TO YOUR PC'S IP OR ELSE IT WON'T WORK
-  static const String _tokenEndpoint = 'http://192.168.1.126:9000/oauth2/token';
-  static const String _backendBaseUrl = 'http://192.168.1.126:8080/api/givenget';
+  static const String _tokenEndpoint = 'http://192.168.1.87:9000/oauth2/token';
+  static const String _backendBaseUrl = 'http://192.168.1.87:8080/api/givenget';
   static const List<String> _scopes = ['givenget:read', 'givenget:write'];
 
   Future<String?> getAccessToken() async {
-    const clientId = 'givenget';
-    const clientSecret = 'SuperSecret'; // Noop encoded
-    const tokenUrl = 'http://192.168.1.126:9000/oauth2/token';
-    const scopes = ['givenget:read', 'givenget:write'];
+    try {
+      final response = await http.post(
+        Uri.parse(_tokenEndpoint),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: {
+          'grant_type': 'client_credentials',
+          'client_id': _clientId,
+          'client_secret': _clientSecret,
+          'scope': _scopes.join(' '),
+        },
+      );
 
-    final response = await http.post(
-      Uri.parse(tokenUrl),
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: {
-        'grant_type': 'client_credentials',
-        'client_id': clientId,
-        'client_secret': clientSecret,
-        'scope': scopes.join(' '),
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final tokenData = jsonDecode(response.body);
-      return tokenData['access_token'];
-    } else {
-      print('❌ Failed to fetch token: ${response.body}');
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> tokenData = jsonDecode(response.body);
+        print("Full Token Data: $tokenData");
+        return tokenData['access_token'];
+      } else {
+        print('❌ Failed: ${response.statusCode} - ${response.body}');
+        return null;
+      }
+    } catch (e) {
+      print('❌ Exception: $e');
       return null;
     }
   }
+
 
 
   // Future<String?> getAccessToken() async {
@@ -78,7 +82,7 @@ class AuthService {
     required String password,
     // required String token,
   }) async {
-    final url = Uri.parse('http://192.168.1.126:8080/api/givenget/auth/signup');
+    final url = Uri.parse('http://192.168.1.87:8080/api/givenget/auth/signup');
 
     final response = await http.post(
       url,
@@ -118,7 +122,7 @@ class AuthService {
       };
 
       final response = await http.post(
-        Uri.parse('http://192.168.1.126:8080/api/givenget/auth/login'),
+        Uri.parse('http://192.168.1.87:8080/api/givenget/auth/login'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -173,7 +177,7 @@ class AuthService {
     if (token == null || userId == null) return null;
 
 
-    final url = 'http://192.168.1.126:8080/api/givenget/users/$userId';
+    final url = 'http://192.168.1.87:8080/api/givenget/users/$userId';
     print('🌐 GET $url');
     // IP ADDRESS
     final response = await http.get(
